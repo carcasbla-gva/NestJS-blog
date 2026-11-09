@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import session from 'express-session';
 import helmet from 'helmet';
+import mysql from 'mysql2/promise';
 import { NextFunction, Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import * as nunjucks from 'nunjucks';
@@ -21,10 +22,60 @@ import { asset } from './common/view-helpers';
 import { Session } from './entities/session.entity';
 import { UsersService } from './users/users.service';
 
+/**
+ * Crea la base de datos si no existe, para que un arranque limpio no falle con
+ * "Unknown database". Se puede desactivar con DB_AUTO_CREATE=false.
+ */
+async function ensureDatabase(logger: Logger): Promise<void> {
+  try {
+    process.loadEnvFile?.('.env');
+  } catch {
+    // .env es opcional: en producción se usan variables del entorno.
+  }
+
+  const autoCreate =
+    process.env.DB_AUTO_CREATE === 'true' ||
+    (process.env.NODE_ENV !== 'production' &&
+      process.env.DB_AUTO_CREATE !== 'false');
+  if (!autoCreate) {
+    return;
+  }
+
+  const database = (process.env.DB_DATABASE ?? 'nestjs_blog').replace(
+    /`/g,
+    '',
+  );
+
+  try {
+    const connection = await mysql.createConnection({
+      host: process.env.DB_HOST ?? '127.0.0.1',
+      port: Number(process.env.DB_PORT ?? 3306),
+      user: process.env.DB_USERNAME ?? 'root',
+      password: process.env.DB_PASSWORD ?? '',
+    });
+    try {
+      await connection.query(
+        `CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`,
+      );
+      logger.log(`Base de datos "${database}" lista`);
+    } finally {
+      await connection.end();
+    }
+  } catch (error) {
+    logger.warn(
+      `No se pudo crear la base de datos "${database}": ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
+  }
+}
+
 async function bootstrap(): Promise<void> {
+  const logger = new Logger('Bootstrap');
+  await ensureDatabase(logger);
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
-  const logger = new Logger('Bootstrap');
   const isProduction = config.get<string>('NODE_ENV') === 'production';
 
   app.set('trust proxy', 1);
