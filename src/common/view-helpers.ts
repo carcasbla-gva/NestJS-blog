@@ -12,6 +12,38 @@ export function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+/** Convierte checkboxes/valores del formulario a booleano. */
+export function formBoolean(value: unknown): boolean {
+  return value === true || value === '1' || value === 'true' || value === 'on';
+}
+
+/** Convierte "fotografía, viajes, luz" en un array limpio y sin duplicados. */
+export function parseTags(value: unknown): string[] {
+  const raw = formString(value);
+  if (!raw) {
+    return [];
+  }
+  return Array.from(
+    new Set(
+      raw
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean),
+    ),
+  ).slice(0, 10);
+}
+
+/** Recorta texto plano para meta descriptions, RSS y resúmenes. */
+export function excerpt(value: string, length = 160): string {
+  const plain = String(value ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (plain.length <= length) {
+    return plain;
+  }
+  return `${plain.slice(0, length - 1).trimEnd()}…`;
+}
+
 export function parseInteger(value: unknown, fallback: number): number {
   const raw = formString(value);
   if (raw === '') {

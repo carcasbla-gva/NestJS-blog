@@ -11,9 +11,13 @@ import { ContactService } from './contact/contact.service';
 import { AppViewMiddleware } from './common/app-view.middleware';
 import { CsrfService } from './common/csrf.service';
 import { AdminGuard, AuthGuard } from './common/guards';
+import { MailService } from './common/mail.service';
+import { validateEnv } from './config/env.validation';
 import { ENTITIES } from './entities';
 import { PagesController } from './pages/pages.controller';
+import { ProfileController } from './profile/profile.controller';
 import { SeedService } from './seed/seed.service';
+import { SeoController } from './seo/seo.controller';
 import { UsersService } from './users/users.service';
 
 @Module({
@@ -21,6 +25,7 @@ import { UsersService } from './users/users.service';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env', '.env.local'],
+      validate: validateEnv,
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -42,7 +47,9 @@ import { UsersService } from './users/users.service';
     PagesController,
     BlogController,
     AuthController,
+    ProfileController,
     AdminController,
+    SeoController,
   ],
   providers: [
     UsersService,
@@ -51,6 +58,7 @@ import { UsersService } from './users/users.service';
     BlogService,
     AdminService,
     ContactService,
+    MailService,
     SeedService,
     AuthGuard,
     AdminGuard,

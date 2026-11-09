@@ -2,6 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { UsersService } from '../users/users.service';
 import { CsrfService } from './csrf.service';
+import { baseUrl } from './request';
 
 @Injectable()
 export class AppViewMiddleware implements NestMiddleware {
@@ -14,6 +15,8 @@ export class AppViewMiddleware implements NestMiddleware {
     try {
       res.locals.currentPath = req.path;
       res.locals.currentUser = null;
+      res.locals.siteUrl = baseUrl(req);
+      res.locals.currentUrl = `${baseUrl(req)}${req.originalUrl}`;
 
       if (req.session) {
         res.locals.flash = req.session.flash ?? null;

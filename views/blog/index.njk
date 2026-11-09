@@ -1,4 +1,7 @@
 {% extends "../base.njk" %}
+{% block title %}Blog{% if category %} · {{ category.name }}{% endif %}{% if searchTerm %} · {{ searchTerm }}{% endif %} | PhotographItem{% endblock %}
+{% block description %}Artículos de fotografía sobre paisajes, retratos, bodas y calle.{% endblock %}
+
 {% block body %}
 <!-- Principal Content Start -->
 <div id="blog">
@@ -7,8 +10,27 @@
 
       <!-- Blocks of Posts -->
       <div class="col-xs-12 col-sm-8 row">
+        {% if searchTerm %}
+          <div class="col-xs-12">
+            <h2>Resultados para “{{ searchTerm }}”</h2>
+            <p class="text-muted">{{ total }} resultado(s). <a href="/blog">Ver todos los posts</a></p>
+            <hr>
+          </div>
+        {% elif category %}
+          <div class="col-xs-12">
+            <h2>Categoría: {{ category.name }}</h2>
+            {% if category.description %}<p class="text-muted">{{ category.description }}</p>{% endif %}
+            <p class="text-muted">{{ total }} post(s). <a href="/blog">Ver todos los posts</a></p>
+            <hr>
+          </div>
+        {% endif %}
+
         {% for post in posts %}
           {% include "../partials/post.njk" %}
+        {% else %}
+          <div class="col-xs-12">
+            <p>No hay posts disponibles todavía.</p>
+          </div>
         {% endfor %}
 
         {% include "../partials/pagination.njk" %}
@@ -18,7 +40,7 @@
       <!-- Side bar -->
       <div class="col-xs-12 col-sm-4">
         <form action="/blog/buscar" method="get">
-          <input type="text" class="form-control" style="display:unset; width:85%" placeholder="Research" name="searchTerm" value="{{ searchTerm or '' }}">
+          <input type="text" class="form-control" style="display:unset; width:85%" placeholder="Buscar..." name="searchTerm" value="{{ searchTerm or '' }}">
           <button type="submit" class="btn btn-primary btn-danger"><i class="fa fa-search"></i></button>
         </form>
         <div class="panel">
@@ -27,17 +49,21 @@
           </div>
           <div class="panel-body">
             <ul class="nav">
-              <li><a href="#">Category I</a></li>
-              <li><a href="#">Category II</a></li>
-              <li><a href="#">Category III</a></li>
-              <li><a href="#">Category IV</a></li>
-              <li class="last"><a href="#">Category V</a></li>
+              {% for item in categories %}
+                <li class="{% if loop.last %}last{% endif %}">
+                  <a href="/blog/categoria/{{ item.slug }}" class="{% if category and category.id == item.id %}active{% endif %}">
+                    {{ item.name }} <span class="text-muted">({{ item.postCount or 0 }})</span>
+                  </a>
+                </li>
+              {% else %}
+                <li><span class="text-muted">Sin categorías</span></li>
+              {% endfor %}
             </ul>
           </div>
         </div>
         <div class="well">
-          <h4>Soluta</h4>
-          <p>Quod soluta corrupti earum officia vel inventore vitae quidem, consequuntur odit impedit.</p>
+          <h4>Suscríbete</h4>
+          <p><a href="/rss.xml">RSS del blog</a> · <a href="/sitemap.xml">Sitemap</a></p>
         </div>
         <h3>Recent Posts</h3>
         <hr>

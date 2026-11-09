@@ -1,63 +1,99 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
+{% block title %}{{ post.title }} | PhotographItem{% endblock %}
+{% block description %}{{ post.content | truncate(160, true, '...') }}{% endblock %}
+{% block canonical %}{{ siteUrl }}/single_post/{{ post.slug }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_description %}{{ post.content | truncate(160, true, '...') }}{% endblock %}
+{% block head %}
+  <meta property="og:image" content="{{ siteUrl }}{{ asset('images/blog/' + post.image) }}">
+{% endblock %}
+
 {% block body %}
 <!-- Principal Content Start -->
 <div id="single">
   <div class="container">
     <!-- Full Article -->
-    {% if not post %}
-      <div class="row">
-        <div class="col-xs-12">
-          <h2>Post not found</h2>
+    <div class="row">
+      <h2>{{ post.title }}</h2>
+      <hr class="subtitle">
+      <div class="block1">
+        <div class="col-xs-12 col-sm-9">
+          {% if post.category %}
+            <p class="text-muted">
+              <i class="fa fa-folder-open sr-icons"></i>
+              <a href="/blog/categoria/{{ post.category.slug }}">{{ post.category.name }}</a>
+              {% if not post.published %}<span class="label label-warning">Borrador</span>{% endif %}
+            </p>
+          {% endif %}
+
+          <img class="img-responsive" src="{{ asset('images/blog/' + post.image) }}" alt="{{ post.title }}">
+          <br>
+          <p>{{ post.content }}</p>
+
+          {% if post.tags and post.tags.length %}
+            <p class="text-muted">
+              {% for tag in post.tags %}
+                <a href="/blog/buscar?searchTerm={{ tag | urlencode }}">#{{ tag }}</a>{% if not loop.last %} · {% endif %}
+              {% endfor %}
+            </p>
+          {% endif %}
+
+          <h4>- By {{ post.postUser.name if post.postUser else 'Anonymous' }}</h4>
+          <hr>
+          <ul class="list-inline">
+            <li>{{ post.publishedAt | date('d') }} {{ post.publishedAt | date('F') }} |</li>
+            <li><i class="fa fa-eye sr-icons"></i> {{ post.numViews }} views |</li>
+            <li><a class="page-scroll" href="#form">COMMENT</a> <i class="fa fa-comments sr-icons"></i> {{ post.numComments }} |</li>
+            <li>
+              <a id="like-button" href="/single_post/{{ post.slug }}/like" data-slug="{{ post.slug }}">
+                {% if liked %}UNLIKE{% else %}LIKE{% endif %}
+              </a>
+              <i class="fa fa-heart sr-icons"></i><span id="likes"> {{ post.numLikes }}</span>
+            </li>
+            {% if currentUser and currentUser.isAdmin %}
+              <li><a href="/admin/posts/{{ post.id }}/edit"><i class="fa fa-pencil sr-icons"></i> Editar</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+          <h4>Recent Post</h4>
+          <hr class="subtitle1">
+          {% for recent in recents %}
+            {% include "../partials/recent_post.njk" %}
+          {% endfor %}
         </div>
       </div>
-    {% else %}
-      <div class="row">
-        <h2>{{ post.title }}</h2>
-        <hr class="subtitle">
-        <div class="block1">
-          <div class="col-xs-12 col-sm-9">
-            <img class="img-responsive" src="{{ asset('images/blog/' + post.image) }}" alt="{{ post.title }}">
-            <br>
-            <p>{{ post.content }}</p>
-            <h4>- By {{ post.postUser.name if post.postUser else 'Anonymous' }}</h4>
-            <hr>
-            <ul class="list-inline">
-              <li>{{ post.publishedAt | date('d') }} {{ post.publishedAt | date('F') }} |</li>
-              <li><a class="page-scroll" href="#form">COMMENT</a> <i class="fa fa-comments sr-icons"></i> {{ post.numComments }} |</li>
-              <li><a href="/single_post/{{ post.slug }}/like">LIKE</a> <i class="fa fa-heart sr-icons"></i><span id="likes"> {{ post.numLikes }}</span></li>
-            </ul>
-          </div>
-          <div class="col-xs-12 col-sm-3">
-            <h4>Recent Post</h4>
-            <hr class="subtitle1">
-            {% for recent in recents %}
-              {% include "../partials/recent_post.njk" %}
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-      <!-- End of Full Article -->
-    {% endif %}
+    </div>
+    <!-- End of Full Article -->
 
     <!-- Comments -->
     <div class="row">
       <div class="col-xs-12 col-sm-12 block2">
-        {% if post %}
-          {% for comment in post.comments %}
-            <div class="comment">
-              <h4>{{ comment.name }}</h4>
-              <p class="time">{{ comment.publishedAt | date('g:i A') }}</p>
-              <hr>
-              <p>{{ comment.text }}</p>
-            </div>
-          {% endfor %}
-        {% endif %}
+        {% for comment in comments %}
+          <div class="comment">
+            <h4>
+              {{ comment.name }}
+              {% if not comment.approved %}<span class="label label-warning">Pendiente de aprobación</span>{% endif %}
+            </h4>
+            <p class="time">{{ comment.publishedAt | date('g:i A') }} · {{ comment.publishedAt | date('d F Y') }}</p>
+            <hr>
+            <p>{{ comment.text }}</p>
+          </div>
+        {% else %}
+          <p class="text-muted">Todavía no hay comentarios. ¡Sé el primero!</p>
+        {% endfor %}
 
         <hr class="line">
         <div id="form" class="col-xs-12 col-sm-6 col-sm-push-3">
-          <form action="/single_post/{{ post.slug if post else '' }}/comment" method="post">
+          <form action="/single_post/{{ post.slug }}/comment" method="post">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+            <div style="display:none" aria-hidden="true">
+              <label for="website">Website</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
 
             <div class="form-group">
               <div class="col-xs-12 col-sm-6">
@@ -87,29 +123,33 @@
   </div>
 </div>
 <!-- End of Principal Content Start -->
-{% if post %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const likeLink = document.querySelector('a[href="/single_post/{{ post.slug }}/like"]');
-      const likesSpan = document.querySelector('#likes');
-      likeLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        fetch(likeLink.href, {
-          method: 'POST',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Content-Type': 'application/json'
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var likeLink = document.getElementById('like-button');
+    var likesSpan = document.getElementById('likes');
+    if (!likeLink) {
+      return;
+    }
+
+    likeLink.addEventListener('click', function (event) {
+      event.preventDefault();
+      fetch(likeLink.getAttribute('href'), {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          if (data.success) {
+            likesSpan.innerHTML = ' ' + data.likes;
+            likeLink.textContent = data.liked ? 'UNLIKE' : 'LIKE';
           }
         })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              likesSpan.innerHTML = " " + data.likes;
-            }
-          })
-          .catch(error => console.error('Error:', error));
-      });
+        .catch(function (error) { console.error('Error:', error); });
     });
-  </script>
-{% endif %}
+  });
+</script>
 {% endblock %}

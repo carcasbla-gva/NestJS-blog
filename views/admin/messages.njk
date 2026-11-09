@@ -1,0 +1,46 @@
+{% extends "../base.njk" %}
+{% block title %}Admin · Mensajes | PhotographItem{% endblock %}
+{% block body %}
+<div id="categories">
+  <div class="container">
+    <h1>Mensajes de contacto</h1>
+    <hr class="divider">
+
+    {% include "admin/nav.njk" %}
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Asunto</th>
+            <th>Mensaje</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for message in messages %}
+            <tr>
+              <td>{{ message.id }}</td>
+              <td>{{ message.firstName }} {{ message.lastName }}</td>
+              <td><a href="mailto:{{ message.email }}">{{ message.email }}</a></td>
+              <td>{{ message.subject }}</td>
+              <td>{{ message.message | truncate(160, true, '...') }}</td>
+              <td>
+                <form action="/admin/messages/{{ message.id }}/delete" method="post" onsubmit="return confirm('¿Eliminar este mensaje?');">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <button type="submit" class="btn btn-xs btn-danger">Borrar</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr><td colspan="6" class="text-muted">No hay mensajes.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

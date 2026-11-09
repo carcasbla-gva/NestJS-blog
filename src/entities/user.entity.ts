@@ -23,6 +23,15 @@ export class User {
   @Column({ length: 255 })
   password: string;
 
+  @Column({ type: 'text', nullable: true })
+  bio: string | null;
+
+  @Column({ name: 'email_verified', type: 'boolean', default: true })
+  emailVerified: boolean;
+
+  @Column({ name: 'verification_token', length: 64, nullable: true })
+  verificationToken: string | null;
+
   @OneToMany(() => Post, (post) => post.postUser)
   posts: Post[];
 

@@ -9,6 +9,9 @@ declare module 'express-session' {
       type: 'success' | 'error' | 'info';
       message: string;
     };
+    viewedPosts?: number[];
+    viewedImages?: number[];
+    likedImages?: number[];
   }
 }
 

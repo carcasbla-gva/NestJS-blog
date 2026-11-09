@@ -15,6 +15,9 @@ export class Image {
   @Column({ length: 255 })
   file: string;
 
+  @Column({ length: 255, nullable: true })
+  thumbnail: string | null;
+
   @Column({ name: 'num_likes', type: 'int', default: 0 })
   numLikes: number;
 

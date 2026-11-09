@@ -1,0 +1,16 @@
+{% extends "../base.njk" %}
+{% block title %}Demasiadas peticiones | PhotographItem{% endblock %}
+{% block body %}
+<div id="contact">
+  <div class="container">
+    <div class="col-xs-12 col-sm-8 col-sm-push-2">
+      <div class="jumbotron text-center" style="margin-top: 30px; background-color: #f7f7f7;">
+        <h1>429</h1>
+        <p>{{ message or 'Demasiadas peticiones. Espera unos minutos e inténtalo de nuevo.' }}</p>
+        {% if retryAfter %}<p class="text-muted">Puedes volver a intentarlo en {{ retryAfter }} segundos.</p>{% endif %}
+        <a href="/" class="btn btn-lg sr-button">Volver al inicio</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "../base.njk" %}
+{% block title %}Error {{ status or 500 }} | PhotographItem{% endblock %}
+{% block body %}
+<div id="contact">
+  <div class="container">
+    <div class="col-xs-12 col-sm-8 col-sm-push-2">
+      <div class="jumbotron text-center" style="margin-top: 30px; background-color: #f7f7f7;">
+        <h1>{{ status or 500 }}</h1>
+        <p>{{ message or 'Ha ocurrido un error interno. Inténtalo de nuevo más tarde.' }}</p>
+        <a href="/" class="btn btn-lg sr-button">Volver al inicio</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

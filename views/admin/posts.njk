@@ -1,0 +1,69 @@
+{% extends "../base.njk" %}
+{% block title %}Admin · Posts | PhotographItem{% endblock %}
+{% block body %}
+<div id="categories">
+  <div class="container">
+    <h1>Posts</h1>
+    <hr class="divider">
+
+    {% include "admin/nav.njk" %}
+
+    <p><a href="/blog/new" class="btn btn-lg sr-button">Nuevo post</a></p>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Título</th>
+            <th>Categoría</th>
+            <th>Autor</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Métricas</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in posts %}
+            <tr>
+              <td>{{ post.id }}</td>
+              <td>
+                {% if post.published %}
+                  <a href="/single_post/{{ post.slug }}">{{ post.title }}</a>
+                {% else %}
+                  {{ post.title }}
+                {% endif %}
+              </td>
+              <td>{{ post.category.name if post.category else '—' }}</td>
+              <td>{{ post.postUser.name if post.postUser else '—' }}</td>
+              <td>
+                {% if post.published %}
+                  <span class="label label-success">Publicado</span>
+                {% else %}
+                  <span class="label label-warning">Borrador</span>
+                {% endif %}
+              </td>
+              <td>{{ post.publishedAt | date('d/m/Y') }}</td>
+              <td class="text-muted">
+                <i class="fa fa-eye"></i> {{ post.numViews }}
+                <i class="fa fa-heart"></i> {{ post.numLikes }}
+                <i class="fa fa-comments"></i> {{ post.numComments }}
+              </td>
+              <td>
+                <a href="/admin/posts/{{ post.id }}/edit" class="btn btn-xs btn-primary">Editar</a>
+                <form action="/admin/posts/{{ post.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('¿Eliminar este post?');">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <button type="submit" class="btn btn-xs btn-danger">Borrar</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr><td colspan="8" class="text-muted">No hay posts todavía.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

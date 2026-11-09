@@ -1,0 +1,67 @@
+{% extends "../base.njk" %}
+{% block title %}Admin · Comentarios | PhotographItem{% endblock %}
+{% block body %}
+<div id="categories">
+  <div class="container">
+    <h1>Comentarios</h1>
+    <hr class="divider">
+
+    {% include "admin/nav.njk" %}
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Post</th>
+            <th>Autor</th>
+            <th>Comentario</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for comment in comments %}
+            <tr class="{% if not comment.approved %}warning{% endif %}">
+              <td>{{ comment.id }}</td>
+              <td>
+                {% if comment.post %}
+                  <a href="/single_post/{{ comment.post.slug }}">{{ comment.post.title }}</a>
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td>{{ comment.name }}<br><small class="text-muted">{{ comment.email }}</small></td>
+              <td>{{ comment.text | truncate(120, true, '...') }}</td>
+              <td>{{ comment.publishedAt | date('d/m/Y H:i') }}</td>
+              <td>
+                {% if comment.approved %}
+                  <span class="label label-success">Visible</span>
+                {% else %}
+                  <span class="label label-warning">Oculto</span>
+                {% endif %}
+              </td>
+              <td>
+                <form action="/admin/comments/{{ comment.id }}" method="post" style="display:inline">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <input type="hidden" name="approved" value="{% if comment.approved %}0{% else %}1{% endif %}">
+                  <button type="submit" class="btn btn-xs {% if comment.approved %}btn-default{% else %}btn-success{% endif %}">
+                    {% if comment.approved %}Ocultar{% else %}Aprobar{% endif %}
+                  </button>
+                </form>
+                <form action="/admin/comments/{{ comment.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('¿Eliminar este comentario?');">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <button type="submit" class="btn btn-xs btn-danger">Borrar</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr><td colspan="7" class="text-muted">No hay comentarios.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,45 +1,72 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
+{% block title %}Admin · Categorías | PhotographItem{% endblock %}
 {% block body %}
-<!-- Principal Content Start -->
 <div id="categories">
   <div class="container">
-    <div class="col-xs-12 col-sm-8 col-sm-push-2">
-      <h1>Categories</h1>
-      <hr class="divider">
+    <h1>Categorías</h1>
+    <hr class="divider">
 
+    {% include "admin/nav.njk" %}
+
+    <div class="col-xs-12 col-sm-6">
+      <h3>Nueva categoría</h3>
       <form action="/admin/categories" method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <div class="form-group">
-          <label for="name">Name</label>
+          <label for="name">Nombre</label>
           <input type="text" id="name" name="name" class="form-control" value="{{ values.name or '' }}">
           {{ forms.error(errors, 'name') }}
         </div>
-        <button type="submit" class="btn btn-lg sr-button">Save</button>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea id="description" name="description" class="form-control" rows="2">{{ values.description or '' }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-lg sr-button">Crear categoría</button>
       </form>
+    </div>
 
-      <hr class="divider">
-      <div>
+    <div class="col-xs-12 col-sm-6">
+      <h3>Existentes</h3>
+      <div class="table-responsive">
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Slug</th>
+              <th>Posts</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {% for category in categories %}
               <tr>
-                <th scope="row">{{ category.id }}</th>
-                <td>{{ category.name }}</td>
+                <td>{{ category.id }}</td>
+                <td>
+                  <form action="/admin/categories/{{ category.id }}" method="post">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                    <input type="text" name="name" class="form-control input-sm" value="{{ category.name }}">
+                    <textarea name="description" class="form-control input-sm" rows="2" style="margin-top:5px">{{ category.description or '' }}</textarea>
+                    <button type="submit" class="btn btn-xs btn-primary" style="margin-top:5px">Guardar</button>
+                  </form>
+                </td>
+                <td><code>{{ category.slug or '—' }}</code></td>
+                <td>{{ category.postCount or 0 }}</td>
+                <td>
+                  <form action="/admin/categories/{{ category.id }}/delete" method="post" onsubmit="return confirm('¿Eliminar la categoría? Los posts quedarán sin categoría.');">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                    <button type="submit" class="btn btn-xs btn-danger">Borrar</button>
+                  </form>
+                </td>
               </tr>
+            {% else %}
+              <tr><td colspan="5" class="text-muted">No hay categorías.</td></tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
-
     </div>
   </div>
 </div>
-<!-- Principal Content Start -->
 {% endblock %}

@@ -1,0 +1,86 @@
+{% extends "../base.njk" %}
+{% import "../macros/forms.njk" as forms %}
+{% block title %}Editar post | PhotographItem{% endblock %}
+{% block body %}
+<div id="new-post">
+  <div class="container">
+    <div class="col-xs-12 col-sm-8 col-sm-push-2">
+      <h1>Editar post</h1>
+      <hr class="divider">
+
+      {% include "admin/nav.njk" %}
+
+      <p class="text-muted">
+        Slug actual: <code>{{ post.slug }}</code>
+        {% if post.published %}· <a href="/single_post/{{ post.slug }}">ver en el blog</a>{% endif %}
+      </p>
+
+      <form class="form-horizontal" action="/admin/posts/{{ post.id }}/edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{ values.title or '' }}">
+            {{ forms.error(errors, 'title') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <label for="content">Content</label>
+            <textarea id="content" name="content" class="form-control" rows="10">{{ values.content or '' }}</textarea>
+            {{ forms.error(errors, 'content') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12 col-sm-6">
+            <label for="category">Category</label>
+            <select id="category" name="category" class="form-control">
+              <option value="">-- Sin categoría --</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}" {% if (category.id | string) == ((values.category or '') | string) %}selected{% endif %}>{{ category.name }}</option>
+              {% endfor %}
+            </select>
+            {{ forms.error(errors, 'category') }}
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <label for="tags">Tags</label>
+            <input type="text" id="tags" name="tags" class="form-control" value="{{ values.tags or '' }}">
+            {{ forms.error(errors, 'tags') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12 col-sm-6">
+            <label for="image">Imagen actual</label>
+            <div>
+              <img src="{{ asset('images/blog/' + post.image) }}" alt="{{ post.title }}" width="160">
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <label for="image">Reemplazar imagen (opcional)</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/jpeg,image/png">
+            {{ forms.error(errors, 'image') }}
+          </div>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="published" value="1" {% if values.published != '' %}checked{% endif %}>
+            Publicado
+          </label>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <button type="submit" class="pull-right btn btn-lg sr-button">Guardar cambios</button>
+            <a href="/admin/posts" class="btn btn-link">Cancelar</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,94 +1,171 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
+{% block title %}Admin · Imágenes | PhotographItem{% endblock %}
 {% block body %}
-<!-- Principal Content Start -->
 <div id="images">
   <div class="container">
-    <div class="col-xs-12 col-sm-8 col-sm-push-2">
-      <h1>Images</h1>
-      <hr class="divider">
+    <h1>Imágenes</h1>
+    <hr class="divider">
 
-      <form class="form-horizontal" action="/admin/images" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    {% include "admin/nav.njk" %}
 
-        <div class="form-group">
-          <div class="col-xs-12">
-            <label for="file">File</label>
-            <input type="file" id="file" name="file" class="form-control" accept="image/jpeg,image/png">
-            {{ forms.error(errors, 'file') }}
-          </div>
-        </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6">
+        <h3>Subir una imagen</h3>
+        <form class="form-horizontal" action="/admin/images" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
-        <div class="form-group">
-          <div class="col-xs-4">
-            <label for="numLikes">Likes</label>
-            <input type="number" id="numLikes" name="numLikes" class="form-control" value="{{ values.numLikes or 0 }}">
-            {{ forms.error(errors, 'numLikes') }}
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label for="file">Archivo</label>
+              <input type="file" id="file" name="file" class="form-control" accept="image/jpeg,image/png">
+              {{ forms.error(errors, 'file') }}
+            </div>
           </div>
-          <div class="col-xs-4">
-            <label for="numViews">Views</label>
-            <input type="number" id="numViews" name="numViews" class="form-control" value="{{ values.numViews or 0 }}">
-            {{ forms.error(errors, 'numViews') }}
-          </div>
-          <div class="col-xs-4">
-            <label for="numDownloads">Downloads</label>
-            <input type="number" id="numDownloads" name="numDownloads" class="form-control" value="{{ values.numDownloads or 0 }}">
-            {{ forms.error(errors, 'numDownloads') }}
-          </div>
-        </div>
 
-        <div class="form-group">
-          <div class="col-xs-12">
-            <label for="category">Category</label>
-            <select id="category" name="category" class="form-control">
-              <option value="">-- Selecciona una categoría --</option>
-              {% for category in categories %}
-                <option value="{{ category.id }}" {% if (category.id | string) == ((values.category or '') | string) %}selected{% endif %}>{{ category.name }}</option>
-              {% endfor %}
-            </select>
-            {{ forms.error(errors, 'category') }}
+          <div class="form-group">
+            <div class="col-xs-4">
+              <label for="numLikes">Likes</label>
+              <input type="number" id="numLikes" name="numLikes" class="form-control" value="{{ values.numLikes or 0 }}">
+              {{ forms.error(errors, 'numLikes') }}
+            </div>
+            <div class="col-xs-4">
+              <label for="numViews">Views</label>
+              <input type="number" id="numViews" name="numViews" class="form-control" value="{{ values.numViews or 0 }}">
+              {{ forms.error(errors, 'numViews') }}
+            </div>
+            <div class="col-xs-4">
+              <label for="numDownloads">Downloads</label>
+              <input type="number" id="numDownloads" name="numDownloads" class="form-control" value="{{ values.numDownloads or 0 }}">
+              {{ forms.error(errors, 'numDownloads') }}
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <div class="col-xs-12">
-            <button type="submit" class="pull-right btn btn-lg sr-button">Send</button>
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label for="category">Categoría</label>
+              <select id="category" name="category" class="form-control">
+                <option value="">-- Selecciona una categoría --</option>
+                {% for category in categories %}
+                  <option value="{{ category.id }}" {% if (category.id | string) == ((values.category or '') | string) %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+              </select>
+              {{ forms.error(errors, 'category') }}
+            </div>
           </div>
-        </div>
-      </form>
 
-      <hr class="divider">
-      <div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Image</th>
-              <th scope="col">Category</th>
-              <th scope="col">Likes</th>
-              <th scope="col">Views</th>
-              <th scope="col">Downloads</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for image in images %}
-              <tr>
-                <th scope="row">{{ image.id }}</th>
-                <td>
-                  <img src="{{ asset('images/index/gallery/' + image.file) }}" alt="" width="80">
-                </td>
-                <td>{{ image.category.name if image.category else '' }}</td>
-                <td>{{ image.numLikes }}</td>
-                <td>{{ image.numViews }}</td>
-                <td>{{ image.numDownloads }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+          <div class="form-group">
+            <div class="col-xs-12">
+              <button type="submit" class="pull-right btn btn-lg sr-button">Subir</button>
+            </div>
+          </div>
+        </form>
       </div>
 
+      <div class="col-xs-12 col-sm-6">
+        <h3>Subida múltiple</h3>
+        <form action="/admin/images/bulk" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+          <div class="form-group">
+            <label for="files">Archivos (máx. 10, JPEG/PNG)</label>
+            <input type="file" id="files" name="files" class="form-control" accept="image/jpeg,image/png" multiple>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-4">
+              <label for="bulkLikes">Likes</label>
+              <input type="number" id="bulkLikes" name="numLikes" class="form-control" value="0">
+            </div>
+            <div class="col-xs-4">
+              <label for="bulkViews">Views</label>
+              <input type="number" id="bulkViews" name="numViews" class="form-control" value="0">
+            </div>
+            <div class="col-xs-4">
+              <label for="bulkDownloads">Downloads</label>
+              <input type="number" id="bulkDownloads" name="numDownloads" class="form-control" value="0">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 15px">
+            <label for="bulkCategory">Categoría</label>
+            <select id="bulkCategory" name="category" class="form-control">
+              <option value="">-- Selecciona una categoría --</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-lg sr-button">Subir archivos</button>
+        </form>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Galería</h3>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Imagen</th>
+            <th>Categoría</th>
+            <th>Métricas y edición</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for image in images %}
+            <tr>
+              <td>{{ image.id }}</td>
+              <td>
+                <a href="{{ asset('images/index/gallery/' + image.file) }}" target="_blank">
+                  <img src="{{ asset('images/index/gallery/' + (image.thumbnail or image.file)) }}" alt="" width="80">
+                </a>
+                <br><small class="text-muted">{{ image.file }}</small>
+              </td>
+              <td>
+                <form action="/admin/images/{{ image.id }}" method="post">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <select name="category" class="form-control input-sm">
+                    <option value="">-- Sin categoría --</option>
+                    {% for category in categories %}
+                      <option value="{{ category.id }}" {% if image.category and category.id == image.category.id %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                  </select>
+
+                  <div class="row" style="margin-top:5px">
+                    <div class="col-xs-4">
+                      <label class="small">Likes</label>
+                      <input type="number" name="numLikes" class="form-control input-sm" value="{{ image.numLikes }}">
+                    </div>
+                    <div class="col-xs-4">
+                      <label class="small">Views</label>
+                      <input type="number" name="numViews" class="form-control input-sm" value="{{ image.numViews }}">
+                    </div>
+                    <div class="col-xs-4">
+                      <label class="small">Downloads</label>
+                      <input type="number" name="numDownloads" class="form-control input-sm" value="{{ image.numDownloads }}">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-xs btn-primary" style="margin-top:5px">Guardar</button>
+                </form>
+              </td>
+              <td>
+                <form action="/admin/images/{{ image.id }}/delete" method="post" onsubmit="return confirm('¿Eliminar esta imagen de la galería?');">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <button type="submit" class="btn btn-xs btn-danger">Borrar</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr><td colspan="5" class="text-muted">No hay imágenes.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
-<!-- Principal Content Start -->
 {% endblock %}

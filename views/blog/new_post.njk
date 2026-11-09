@@ -1,5 +1,6 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
+{% block title %}Nuevo post | PhotographItem{% endblock %}
 {% block body %}
 <!-- Principal Content Start -->
 <div id="new-post">
@@ -28,12 +29,40 @@
         </div>
 
         <div class="form-group">
+          <div class="col-xs-12 col-sm-6">
+            <label for="category">Category</label>
+            <select id="category" name="category" class="form-control">
+              <option value="">-- Sin categoría --</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}" {% if (category.id | string) == ((values.category or '') | string) %}selected{% endif %}>{{ category.name }}</option>
+              {% endfor %}
+            </select>
+            {{ forms.error(errors, 'category') }}
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <label for="tags">Tags</label>
+            <input type="text" id="tags" name="tags" class="form-control" placeholder="fotografía, viajes, luz" value="{{ values.tags or '' }}">
+            <span class="help-block">Separa las etiquetas con comas.</span>
+            {{ forms.error(errors, 'tags') }}
+          </div>
+        </div>
+
+        <div class="form-group">
           <div class="col-xs-12">
             <label for="image">Image</label>
             <input type="file" id="image" name="image" class="form-control" accept="image/jpeg,image/png">
             {{ forms.error(errors, 'image') }}
           </div>
         </div>
+
+        {% if currentUser and currentUser.isAdmin %}
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="published" value="1" {% if values.published != '' %}checked{% endif %}>
+              Publicar inmediatamente (si lo desmarcas se guarda como borrador)
+            </label>
+          </div>
+        {% endif %}
 
         <div class="form-group">
           <div class="col-xs-12">
