@@ -1,0 +1,115 @@
+{% extends "../base.njk" %}
+{% import "../macros/forms.njk" as forms %}
+{% block body %}
+<!-- Principal Content Start -->
+<div id="single">
+  <div class="container">
+    <!-- Full Article -->
+    {% if not post %}
+      <div class="row">
+        <div class="col-xs-12">
+          <h2>Post not found</h2>
+        </div>
+      </div>
+    {% else %}
+      <div class="row">
+        <h2>{{ post.title }}</h2>
+        <hr class="subtitle">
+        <div class="block1">
+          <div class="col-xs-12 col-sm-9">
+            <img class="img-responsive" src="{{ asset('images/blog/' + post.image) }}" alt="{{ post.title }}">
+            <br>
+            <p>{{ post.content }}</p>
+            <h4>- By {{ post.postUser.name if post.postUser else 'Anonymous' }}</h4>
+            <hr>
+            <ul class="list-inline">
+              <li>{{ post.publishedAt | date('d') }} {{ post.publishedAt | date('F') }} |</li>
+              <li><a class="page-scroll" href="#form">COMMENT</a> <i class="fa fa-comments sr-icons"></i> {{ post.numComments }} |</li>
+              <li><a href="/single_post/{{ post.slug }}/like">LIKE</a> <i class="fa fa-heart sr-icons"></i><span id="likes"> {{ post.numLikes }}</span></li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-sm-3">
+            <h4>Recent Post</h4>
+            <hr class="subtitle1">
+            {% for recent in recents %}
+              {% include "../partials/recent_post.njk" %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <!-- End of Full Article -->
+    {% endif %}
+
+    <!-- Comments -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 block2">
+        {% if post %}
+          {% for comment in post.comments %}
+            <div class="comment">
+              <h4>{{ comment.name }}</h4>
+              <p class="time">{{ comment.publishedAt | date('g:i A') }}</p>
+              <hr>
+              <p>{{ comment.text }}</p>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <hr class="line">
+        <div id="form" class="col-xs-12 col-sm-6 col-sm-push-3">
+          <form action="/single_post/{{ post.slug if post else '' }}/comment" method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+            <div class="form-group">
+              <div class="col-xs-12 col-sm-6">
+                <label for="commentName">Name</label>
+                <input type="text" id="commentName" name="name" class="form-control" value="{{ commentValues.name or '' }}">
+                {{ forms.error(commentErrors, 'name') }}
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <label for="commentEmail">Email</label>
+                <input type="email" id="commentEmail" name="email" class="form-control" value="{{ commentValues.email or '' }}">
+                {{ forms.error(commentErrors, 'email') }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-12">
+                <label for="commentText">Type Your Comment</label>
+                <textarea id="commentText" name="text" class="form-control" rows="4">{{ commentValues.text or '' }}</textarea>
+                {{ forms.error(commentErrors, 'text') }}
+                <button type="submit" class="btn btn-lg btn-info sr-button">Send</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End of Comments -->
+  </div>
+</div>
+<!-- End of Principal Content Start -->
+{% if post %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const likeLink = document.querySelector('a[href="/single_post/{{ post.slug }}/like"]');
+      const likesSpan = document.querySelector('#likes');
+      likeLink.addEventListener('click', function (event) {
+        event.preventDefault();
+        fetch(likeLink.href, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              likesSpan.innerHTML = " " + data.likes;
+            }
+          })
+          .catch(error => console.error('Error:', error));
+      });
+    });
+  </script>
+{% endif %}
+{% endblock %}

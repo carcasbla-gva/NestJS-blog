@@ -1,0 +1,94 @@
+{% extends "../base.njk" %}
+{% import "../macros/forms.njk" as forms %}
+{% block body %}
+<!-- Principal Content Start -->
+<div id="images">
+  <div class="container">
+    <div class="col-xs-12 col-sm-8 col-sm-push-2">
+      <h1>Images</h1>
+      <hr class="divider">
+
+      <form class="form-horizontal" action="/admin/images" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <label for="file">File</label>
+            <input type="file" id="file" name="file" class="form-control" accept="image/jpeg,image/png">
+            {{ forms.error(errors, 'file') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-4">
+            <label for="numLikes">Likes</label>
+            <input type="number" id="numLikes" name="numLikes" class="form-control" value="{{ values.numLikes or 0 }}">
+            {{ forms.error(errors, 'numLikes') }}
+          </div>
+          <div class="col-xs-4">
+            <label for="numViews">Views</label>
+            <input type="number" id="numViews" name="numViews" class="form-control" value="{{ values.numViews or 0 }}">
+            {{ forms.error(errors, 'numViews') }}
+          </div>
+          <div class="col-xs-4">
+            <label for="numDownloads">Downloads</label>
+            <input type="number" id="numDownloads" name="numDownloads" class="form-control" value="{{ values.numDownloads or 0 }}">
+            {{ forms.error(errors, 'numDownloads') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <label for="category">Category</label>
+            <select id="category" name="category" class="form-control">
+              <option value="">-- Selecciona una categoría --</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}" {% if (category.id | string) == ((values.category or '') | string) %}selected{% endif %}>{{ category.name }}</option>
+              {% endfor %}
+            </select>
+            {{ forms.error(errors, 'category') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <button type="submit" class="pull-right btn btn-lg sr-button">Send</button>
+          </div>
+        </div>
+      </form>
+
+      <hr class="divider">
+      <div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Image</th>
+              <th scope="col">Category</th>
+              <th scope="col">Likes</th>
+              <th scope="col">Views</th>
+              <th scope="col">Downloads</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for image in images %}
+              <tr>
+                <th scope="row">{{ image.id }}</th>
+                <td>
+                  <img src="{{ asset('images/index/gallery/' + image.file) }}" alt="" width="80">
+                </td>
+                <td>{{ image.category.name if image.category else '' }}</td>
+                <td>{{ image.numLikes }}</td>
+                <td>{{ image.numViews }}</td>
+                <td>{{ image.numDownloads }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Principal Content Start -->
+{% endblock %}

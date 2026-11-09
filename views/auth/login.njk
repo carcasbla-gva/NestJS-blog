@@ -1,0 +1,42 @@
+{% extends "../base.njk" %}
+{% block body %}
+<br>
+<section class="auth-neon">
+  <div class="container">
+    <div class="auth-neon__header text-center">
+      <p class="auth-neon__kicker">WELCOME BACK</p>
+      <h1>Sign in</h1>
+      <p>Access your account to manage orders, wishlist and profile preferences.</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="auth-neon__card" style="margin-top: 30px;">
+          <form method="post" action="/login" class="auth-neon__form">
+            <input type="hidden" name="_csrf_token" value="{{ csrfToken }}">
+
+            {% if currentUser %}
+              <div class="alert alert-info">
+                You are logged in as {{ currentUser.email }}, <a href="/logout">Logout</a>
+              </div>
+            {% endif %}
+
+            <div class="form-group">
+              <label for="inputEmail">Email</label>
+              <input type="email" value="{{ lastUsername }}" name="_username" id="inputEmail" class="form-control auth-neon__input" autocomplete="email" required autofocus>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword">Password</label>
+              <input type="password" name="_password" id="inputPassword" class="form-control auth-neon__input" autocomplete="current-password" required>
+            </div>
+
+            <div class="text-right">
+              <button class="btn btn-lg landing-cta sr-button" type="submit">Sign in</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,5 @@
+{% macro error(errors, field) -%}
+  {%- if errors and errors[field] -%}
+    <span class="help-block text-danger">{{ errors[field] }}</span>
+  {%- endif -%}
+{%- endmacro %}

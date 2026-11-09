@@ -1,0 +1,36 @@
+{% if pager %}
+  <nav class="pager" aria-label="Paginación de posts">
+    <ul class="pagination">
+      {% if pager.previousUrl %}
+        <li class="pager-step">
+          <a href="{{ pager.previousUrl }}" rel="prev" aria-label="Página anterior">
+            <i class="fa fa-arrow-left"></i><span class="pager-label">Anterior</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="pager-step disabled"><span aria-disabled="true">Anterior</span></li>
+      {% endif %}
+
+      {% for item in pager.pages %}
+        {% if item.gap %}
+          <li class="pager-gap" aria-hidden="true"><span>&hellip;</span></li>
+        {% elif item.active %}
+          <li class="active"><span aria-current="page">{{ item.label }}</span></li>
+        {% else %}
+          <li><a href="{{ item.url }}" aria-label="Página {{ item.label }}">{{ item.label }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if pager.nextUrl %}
+        <li class="pager-step pager-next">
+          <a href="{{ pager.nextUrl }}" rel="next" aria-label="Página siguiente">
+            <span class="pager-label">Siguiente</span><i class="fa fa-arrow-right"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="pager-step pager-next disabled"><span aria-disabled="true">Siguiente</span></li>
+      {% endif %}
+    </ul>
+    <p class="pager-status">{{ pager.status }}</p>
+  </nav>
+{% endif %}

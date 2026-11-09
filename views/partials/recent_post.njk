@@ -1,0 +1,7 @@
+<div>
+  <hr>
+  <a href="/single_post/{{ recent.slug }}"><strong>{{ recent.title }}</strong></a>
+  <h5>By <span>{{ recent.postUser.name if recent.postUser else 'Anonymous' }}</span></h5>
+  <p>{{ recent.publishedAt | date('d') }} {{ recent.publishedAt | date('F') }}</p>
+  <p><i class="fa fa-clock-o sr-icons"></i> {{ recent.publishedAt | date('h:i A') }}</p>
+</div>

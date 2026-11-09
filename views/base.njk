@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PhotographItem-Responsive Theme</title>
+
+  <!-- Bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+  <!-- Bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+  <!-- Magnific-popup css -->
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/magnific-popup.css') }}">
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-fixed-top navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand page-scroll" href="/">
+          <span>[PHOTO]</span>
+        </a>
+      </div>
+      <div class="collapse navbar-collapse navbar-right" id="menu">
+        <ul class="nav navbar-nav">
+          <li class="lien {% if currentPath == '/' %}active{% endif %}">
+            <a href="/"><i class="fa fa-home sr-icons"></i> Home</a>
+          </li>
+          <li class="lien {% if currentPath == '/about' %}active{% endif %}">
+            <a href="/about"><i class="fa fa-bookmark sr-icons"></i> About</a>
+          </li>
+          <li class="lien {% if currentPath == '/blog' %}active{% endif %}">
+            <a href="/blog"><i class="fa fa-file-text sr-icons"></i> Blog</a>
+          </li>
+          <li class="lien {% if currentPath == '/contact' %}active{% endif %}">
+            <a href="/contact"><i class="fa fa-phone-square sr-icons"></i> Contact</a>
+          </li>
+          {% if currentUser %}
+            <li>
+              <a href="/logout"><i class="fa fa-sign-out sr-icons"></i> {{ currentUser.name }} - Logout</a>
+            </li>
+            <li>
+              <a href="/blog/new"><i class="fa fa-plus-square sr-icons"></i> New post</a>
+            </li>
+            {% if currentUser.isAdmin %}
+              <li>
+                <a href="/admin/images"><i class="fa fa-cog sr-icons"></i> Admin</a>
+              </li>
+            {% endif %}
+          {% else %}
+            <li class="lien {% if currentPath == '/login' %}active{% endif %}">
+              <a href="/login"><i class="fa fa-sign-in sr-icons"></i> Login</a>
+            </li>
+            <li class="lien {% if currentPath == '/register' %}active{% endif %}">
+              <a href="/register"><i class="fa fa-user-secret sr-icons"></i> Register</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End of Navigation Bar -->
+
+  {% if flash %}
+    <div class="container" style="margin-top: 70px;">
+      {% if flash.type == 'error' %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ flash.message }}
+        </div>
+      {% elif flash.type == 'success' %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ flash.message }}
+        </div>
+      {% else %}
+        <div class="alert alert-info alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ flash.message }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% block body %}{% endblock %}
+
+  <!-- Footer -->
+  <footer class="home-page">
+    <div class="container text-muted text-center">
+      <div class="row">
+        <ul class="nav col-sm-4">
+          <li class="footer-number"><i class="fa fa-phone sr-icons"></i> (00228)92229954 </li>
+          <li><i class="fa fa-envelope sr-icons"></i> kouvenceslas93@gmail.com</li>
+          <li>Photography Fanatic Template &copy; 2017</li>
+        </ul>
+        <ul class="list-inline social-buttons col-sm-4 col-sm-push-4">
+          <li><a href="#"><i class="fa fa-facebook sr-icons"></i></a></li>
+          <li><a href="#"><i class="fa fa-twitter sr-icons"></i></a></li>
+          <li><a href="#"><i class="fa fa-google-plus sr-icons"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Jquery -->
+  <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+  <!-- Bootstrap core Javascript -->
+  <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+  <!-- Plugins -->
+  <script type="text/javascript" src="{{ asset('js/jquery.easing.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/scrollreveal.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
+</body>
+</html>
