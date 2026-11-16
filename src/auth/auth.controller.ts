@@ -73,6 +73,13 @@ export class AuthController {
       type: 'success',
       message: `¡Bienvenido/a ${user.name}! Has iniciado sesión como ${user.email}.`,
     };
+
+    await new Promise<void>((resolve, reject) => {
+      req.session.save((error) =>
+        error ? reject(error) : resolve(),
+      );
+    });
+
     res.redirect('/');
   }
 
