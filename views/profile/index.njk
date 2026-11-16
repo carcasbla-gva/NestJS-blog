@@ -13,9 +13,7 @@
         {% if avatar %}
           <img src="{{ asset('images/avatars/' + avatar) }}" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px;">
         {% else %}
-          <div style="width:120px;height:120px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
-            <i class="fa fa-user" style="font-size:48px;color:#999;"></i>
-          </div>
+          <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="Avatar por defecto" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px;">
         {% endif %}
       </div>
       <form action="/profile/avatar" method="post" enctype="multipart/form-data">

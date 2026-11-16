@@ -126,7 +126,7 @@ entrar en `/admin/*`.
 - **Perfiles públicos de autor**: página `/author/:slug` con avatar, biografía y lista de posts del autor.
 - **Filtrado por tags**: ruta `/blog/tag/:tag` para ver todos los posts con una etiqueta concreta.
 - **Posts destacados**: campo `featured` en posts para mostrarlos en la portada.
-- **Editor de texto enriquecido**: TinyMCE integrado en los formularios de creación y edición de posts.
+- **Editor de texto enriquecido**: campo de contenido con textarea ampliado en los formularios de creación y edición de posts.
 - **Subida de avatar**: los usuarios pueden subir una foto de perfil desde `/profile`.
 - **Enlace al autor desde cada post**: el nombre del autor en cada artículo enlaza a su perfil público.
 

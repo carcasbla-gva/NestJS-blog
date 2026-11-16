@@ -3,12 +3,14 @@
 {% block title %}Contacto - FotoBlog{% endblock %}
 {% block body %}
 <div id="contact">
-  <div class="container">
-    <!-- Header -->
-    <div class="contact-header">
-      <h1><i class="fa fa-envelope"></i> Contacto</h1>
-      <p>¿Tienes alguna pregunta o quieres trabajar con nosotros? No dudes en escribirnos.</p>
+  <!-- Hero con imagen de fondo -->
+  <div style="background: linear-gradient(rgba(108,99,255,0.85), rgba(80,70,220,0.85)), url('{{ asset('images/contact_background.jpg') }}') center/cover no-repeat; padding: 100px 0 60px; text-align: center;">
+    <div class="container">
+      <h1 style="color: #fff; font-size: 48px; margin-bottom: 15px;"><i class="fa fa-envelope"></i> Contacto</h1>
+      <p style="color: rgba(255,255,255,0.9); font-size: 18px; max-width: 600px; margin: 0 auto;">¿Tienes alguna pregunta o quieres trabajar con nosotros? No dudes en escribirnos.</p>
     </div>
+  </div>
+  <div class="container">
 
     <!-- Contact Form -->
     <div class="contact-form-card">
