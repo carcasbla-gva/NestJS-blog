@@ -4,8 +4,11 @@ import {
   Post,
   Req,
   Res,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
 import { AuthService } from '../auth/auth.service';
 import { UsersService } from '../users/users.service';
@@ -13,6 +16,10 @@ import { AuthGuard } from '../common/guards';
 import { CsrfService } from '../common/csrf.service';
 import { baseUrl } from '../common/request';
 import { formString, isEmail } from '../common/view-helpers';
+import { imageStorage, isAllowedImageMime, removeUploadedFile } from '../common/upload';
+import { optimizeImage } from '../common/images';
+import { join } from 'path';
+import { PUBLIC_DIR } from '../common/paths';
 
 @Controller('profile')
 @UseGuards(AuthGuard)
@@ -33,7 +40,70 @@ export class ProfileController {
       },
       errors: {},
       passwordErrors: {},
+      avatar: req.user.avatar,
     });
+  }
+
+  @Post('avatar')
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      storage: imageStorage(join(PUBLIC_DIR, 'images', 'avatars')),
+      limits: { fileSize: 2 * 1024 * 1024 },
+    }),
+  )
+  async uploadAvatar(
+    @Req() req: Request,
+    @Res() res: Response,
+    @UploadedFile() file?: Express.Multer.File,
+  ): Promise<void> {
+    this.csrfService.assertValid(req);
+
+    if (!file) {
+      await removeUploadedFile(file);
+      res.status(200).render('profile/index', {
+        values: {
+          name: req.user.name,
+          email: req.user.email,
+          bio: req.user.bio ?? '',
+        },
+        errors: { avatar: 'Selecciona una imagen' },
+        passwordErrors: {},
+        avatar: req.user.avatar,
+      });
+      return;
+    }
+
+    if (!isAllowedImageMime(file.mimetype)) {
+      await removeUploadedFile(file);
+      res.status(200).render('profile/index', {
+        values: {
+          name: req.user.name,
+          email: req.user.email,
+          bio: req.user.bio ?? '',
+        },
+        errors: { avatar: 'Por favor sube una imagen válida (JPEG o PNG)' },
+        passwordErrors: {},
+        avatar: req.user.avatar,
+      });
+      return;
+    }
+
+    await optimizeImage(file.path);
+
+    // Eliminar avatar anterior
+    if (req.user.avatar) {
+      const oldPath = join(PUBLIC_DIR, 'images', 'avatars', req.user.avatar);
+      await import('fs/promises').then(({ unlink }) =>
+        unlink(oldPath).catch(() => undefined),
+      );
+    }
+
+    await this.usersService.updateAvatar(req.user.id, file.filename);
+    req.session.flash = {
+      type: 'success',
+      message: 'Avatar actualizado correctamente.',
+    };
+    res.redirect('/profile');
   }
 
   @Post()

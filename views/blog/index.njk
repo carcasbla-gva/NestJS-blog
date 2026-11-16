@@ -16,6 +16,12 @@
             <p class="text-muted">{{ total }} resultado(s). <a href="/blog">Ver todos los posts</a></p>
             <hr>
           </div>
+        {% elif tag %}
+          <div class="col-xs-12">
+            <h2>Etiqueta: #{{ tag }}</h2>
+            <p class="text-muted">{{ total }} post(s) con esta etiqueta. <a href="/blog">Ver todos los posts</a></p>
+            <hr>
+          </div>
         {% elif category %}
           <div class="col-xs-12">
             <h2>Categoría: {{ category.name }}</h2>

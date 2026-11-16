@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
+import { slugify } from '../common/slug';
 
 @Injectable()
 export class UsersService {
@@ -92,5 +93,47 @@ export class UsersService {
 
   count(): Promise<number> {
     return this.users.count();
+  }
+
+  findBySlug(slug: string): Promise<User | null> {
+    return this.users.findOne({
+      where: { slug },
+      relations: { posts: true },
+    });
+  }
+
+  async updateAvatar(id: number, avatar: string): Promise<User | null> {
+    const user = await this.findById(id);
+    if (!user) {
+      return null;
+    }
+    user.avatar = avatar;
+    return this.users.save(user);
+  }
+
+  async ensureSlug(user: User): Promise<string> {
+    if (!user.slug) {
+      user.slug = await this.uniqueUserSlug(user.name, user.id);
+      await this.users.save(user);
+    }
+    return user.slug;
+  }
+
+  async uniqueUserSlug(name: string, ignoreId?: number): Promise<string> {
+    const base = slugify(name) || `user-${Date.now()}`;
+    let slug = base;
+    let suffix = 2;
+    while (true) {
+      const where: Record<string, unknown> = { slug };
+      if (ignoreId) {
+        where.id = Not(ignoreId);
+      }
+      const count = await this.users.count({ where });
+      if (count === 0) {
+        return slug;
+      }
+      slug = `${base}-${suffix}`;
+      suffix += 1;
+    }
   }
 }

@@ -8,6 +8,28 @@
       <h1>Mi perfil</h1>
       <hr class="divider">
 
+      <h3>Avatar</h3>
+      <div class="form-group">
+        {% if avatar %}
+          <img src="{{ asset('images/avatars/' + avatar) }}" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px;">
+        {% else %}
+          <div style="width:120px;height:120px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+            <i class="fa fa-user" style="font-size:48px;color:#999;"></i>
+          </div>
+        {% endif %}
+      </div>
+      <form action="/profile/avatar" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <div class="form-group">
+          <label for="avatar">Cambiar foto de perfil</label>
+          <input type="file" id="avatar" name="avatar" class="form-control" accept="image/jpeg,image/png">
+          {{ forms.error(errors, 'avatar') }}
+        </div>
+        <button type="submit" class="btn btn-lg sr-button">Subir avatar</button>
+      </form>
+
+      <hr class="divider">
+
       <h3>Datos personales</h3>
       <form action="/profile" method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">

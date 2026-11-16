@@ -121,6 +121,15 @@ entrar en `/admin/*`.
 - CSRF en todos los formularios, contraseñas con bcrypt y sesiones en MySQL.
 - Páginas de error 404, 429 y 500.
 
+### Funcionalidades extras
+
+- **Perfiles públicos de autor**: página `/author/:slug` con avatar, biografía y lista de posts del autor.
+- **Filtrado por tags**: ruta `/blog/tag/:tag` para ver todos los posts con una etiqueta concreta.
+- **Posts destacados**: campo `featured` en posts para mostrarlos en la portada.
+- **Editor de texto enriquecido**: TinyMCE integrado en los formularios de creación y edición de posts.
+- **Subida de avatar**: los usuarios pueden subir una foto de perfil desde `/profile`.
+- **Enlace al autor desde cada post**: el nombre del autor en cada artículo enlaza a su perfil público.
+
 ## Rutas
 
 | Ruta | Método | Descripción |
@@ -131,6 +140,7 @@ entrar en `/admin/*`.
 | `/blog/:page` | GET | Página concreta del blog |
 | `/blog/buscar?searchTerm=` | GET | Busca posts por contenido |
 | `/blog/categoria/:slug` | GET | Posts de una categoría |
+| `/blog/tag/:tag` | GET | Posts filtrados por etiqueta |
 | `/blog/new` | GET/POST | Crear post (requiere sesión) |
 | `/single_post/:slug` | GET | Detalle de un post |
 | `/single_post/:slug/comment` | POST | Añadir comentario |
@@ -144,8 +154,10 @@ entrar en `/admin/*`.
 | `/reset-password/:token` | GET/POST | Cambiar contraseña con token |
 | `/verify-email/:token` | GET | Verificar correo |
 | `/profile` | GET/POST | Ver/editar perfil |
+| `/profile/avatar` | POST | Subir foto de perfil |
 | `/profile/password` | POST | Cambiar contraseña |
 | `/profile/resend-verification` | POST | Reenviar verificación |
+| `/author/:slug` | GET | Perfil público del autor con sus posts |
 | `/admin` | GET | Dashboard (`ROLE_ADMIN`) |
 | `/admin/posts` | GET | Listado de posts |
 | `/admin/posts/:id/edit` | GET/POST | Editar post |

@@ -109,6 +109,7 @@ export class AdminController {
       category: formString(req.body.category),
       tags: formString(req.body.tags),
       published: formBoolean(req.body.published) ? '1' : '',
+      featured: formBoolean(req.body.featured) ? '1' : '',
     };
 
     const errors: Record<string, string> = {};
@@ -150,6 +151,7 @@ export class AdminController {
       category,
       tags: parseTags(values.tags),
       published: formBoolean(req.body.published),
+      featured: formBoolean(req.body.featured),
     });
 
     req.session.flash = {
@@ -187,6 +189,7 @@ export class AdminController {
       category: post.category ? String(post.category.id) : '',
       tags: (post.tags ?? []).join(', '),
       published: post.published ? '1' : '',
+      featured: post.featured ? '1' : '',
     };
   }
 

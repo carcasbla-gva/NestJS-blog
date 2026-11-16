@@ -16,7 +16,9 @@ export const POSTS_PER_PAGE = 5;
 export type PostFilter = {
   categorySlug?: string;
   search?: string;
+  tag?: string;
   includeDrafts?: boolean;
+  featured?: boolean;
 };
 
 export type PostInput = {
@@ -26,6 +28,7 @@ export type PostInput = {
   category: Category | null;
   tags: string[];
   published: boolean;
+  featured?: boolean;
 };
 
 export type CommentInput = {
@@ -78,6 +81,14 @@ export class BlogService {
         '(post.title LIKE :search OR post.content LIKE :search OR post.tags LIKE :search)',
         { search: `%${filter.search}%` },
       );
+    }
+
+    if (filter.tag) {
+      query.andWhere('post.tags LIKE :tag', { tag: `%"${filter.tag}"%` });
+    }
+
+    if (filter.featured) {
+      query.andWhere('post.featured = :featured', { featured: true });
     }
 
     const [posts, total] = await query
@@ -167,6 +178,7 @@ export class BlogService {
       numComments: 0,
       numViews: 0,
       published: input.published,
+      featured: input.featured ?? false,
       tags: input.tags.length > 0 ? input.tags : null,
       updatedAt: null,
       postUser: user,
@@ -185,6 +197,7 @@ export class BlogService {
     post.category = input.category;
     post.tags = input.tags.length > 0 ? input.tags : null;
     post.published = input.published;
+    post.featured = input.featured ?? false;
     post.updatedAt = new Date();
 
     let previousImage: string | null = null;

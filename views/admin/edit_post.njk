@@ -1,6 +1,9 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
 {% block title %}Editar post | FotoBlog{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.css" referrerpolicy="origin">
+{% endblock %}
 {% block body %}
 <div id="new-post">
   <div class="container">
@@ -73,6 +76,13 @@
           </label>
         </div>
 
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="featured" value="1" {% if values.featured != '' %}checked{% endif %}>
+            Post destacado (aparece en la página principal)
+          </label>
+        </div>
+
         <div class="form-group">
           <div class="col-xs-12">
             <button type="submit" class="pull-right btn btn-lg sr-button">Guardar cambios</button>
@@ -83,4 +93,16 @@
     </div>
   </div>
 </div>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+tinymce.init({
+  selector: '#content',
+  height: 400,
+  plugins: 'lists link image code table',
+  toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | code',
+  menubar: false,
+  statusbar: false,
+  content_style: 'body { font-family: Inter, sans-serif; font-size: 14px; }'
+});
+</script>
 {% endblock %}

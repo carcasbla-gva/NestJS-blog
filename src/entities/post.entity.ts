@@ -43,6 +43,9 @@ export class Post {
   @Column({ type: 'boolean', default: true })
   published: boolean;
 
+  @Column({ type: 'boolean', default: false })
+  featured: boolean;
+
   @Column({ type: 'simple-json', nullable: true })
   tags: string[] | null;
 

@@ -83,6 +83,40 @@
     </div>
   </div>
 
+  <!-- Featured Posts Section -->
+  {% if featuredPosts and featuredPosts.length %}
+  <div style="padding: 60px 0; background: #f9f9f9;">
+    <div class="container">
+      <h3 style="text-align:center; margin-bottom:30px;"><i class="fa fa-star"></i> Posts Destacados</h3>
+      <div class="row">
+        {% for post in featuredPosts %}
+        <div class="col-sm-4">
+          <div class="post" style="margin-bottom:20px;">
+            <div class="post-heading">
+              <img class="img-responsive" src="{{ asset('images/blog/' + post.image) }}" alt="{{ post.title }}">
+            </div>
+            <div class="post-body">
+              <h4><a href="/single_post/{{ post.slug }}">{{ post.title }}</a></h4>
+              <p>{{ post.content | truncate(120, false, '...') }}</p>
+            </div>
+            <div class="post-footer">
+              <a class="btn btn-primary" href="/single_post/{{ post.slug }}">Leer más <i class="fa fa-arrow-right"></i></a>
+              <span>
+                <i class="fa fa-eye sr-icons"></i> {{ post.numViews }}
+                <i class="fa fa-heart sr-icons"></i> {{ post.numLikes }}
+              </span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div style="text-align:center; margin-top:20px;">
+        <a href="/blog" class="btn btn-lg sr-button">Ver todos los posts <i class="fa fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   <!-- Newsletter Section -->
   <div class="newsletter-section">
     <div class="container">

@@ -100,6 +100,24 @@ export class SeedService implements OnApplicationBootstrap {
       { emailVerified: IsNull() },
       { emailVerified: true },
     );
+
+    // Backfill de slugs y avatares de usuario
+    const users = await this.users.find();
+    for (const user of users) {
+      if (!user.slug) {
+        const base = slugify(user.name) || `user-${user.id}`;
+        let slug = base;
+        let suffix = 2;
+        while (
+          (await this.users.count({ where: { slug } })) > 0
+        ) {
+          slug = `${base}-${suffix}`;
+          suffix += 1;
+        }
+        user.slug = slug;
+        await this.users.save(user);
+      }
+    }
   }
 
   private async seedUsers(): Promise<void> {

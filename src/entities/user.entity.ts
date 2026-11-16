@@ -26,6 +26,12 @@ export class User {
   @Column({ type: 'text', nullable: true })
   bio: string | null;
 
+  @Column({ length: 255, nullable: true })
+  avatar: string | null;
+
+  @Column({ length: 255, unique: true, nullable: true })
+  slug: string | null;
+
   @Column({ name: 'email_verified', type: 'boolean', default: true })
   emailVerified: boolean;
 

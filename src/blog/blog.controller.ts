@@ -14,6 +14,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
 import { BlogService, POSTS_PER_PAGE } from './blog.service';
+import { UsersService } from '../users/users.service';
 import { AuthGuard } from '../common/guards';
 import { CsrfService } from '../common/csrf.service';
 import { POSTS_IMAGE_DIR } from '../common/paths';
@@ -38,6 +39,7 @@ export class BlogController {
   constructor(
     private readonly blogService: BlogService,
     private readonly csrfService: CsrfService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Get('blog')
@@ -156,6 +158,80 @@ export class BlogController {
         totalPages,
         { searchTerm },
         'query',
+      ),
+    });
+  }
+
+  @Get('blog/tag/:tag')
+  async tagPage(
+    @Param('tag') tag: string,
+    @Query('page') rawPage: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const page = Math.max(1, Number(rawPage) || 1);
+    const [{ posts, total, totalPages }, recents, categories] =
+      await Promise.all([
+        this.blogService.listPosts(page, POSTS_PER_PAGE, { tag }),
+        this.blogService.findRecents(),
+        this.blogService.categoriesWithPostCounts(),
+      ]);
+
+    res.render('blog/index', {
+      posts,
+      recents,
+      categories,
+      tag,
+      total,
+      totalPages,
+      page,
+      category: null,
+      searchTerm: null,
+      pager: buildPager(
+        `/blog/tag/${encodeURIComponent(tag)}`,
+        page,
+        totalPages,
+      ),
+    });
+  }
+
+  @Get('author/:slug')
+  async authorProfile(
+    @Param('slug') slug: string,
+    @Query('page') rawPage: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<void> {
+    const user = await this.usersService.findBySlug(slug);
+    if (!user) {
+      throw new NotFoundException('Autor no encontrado');
+    }
+
+    const page = Math.max(1, Number(rawPage) || 1);
+    const publishedPosts = (user.posts ?? []).filter((p) => p.published);
+    const total = publishedPosts.length;
+    const totalPages = Math.max(1, Math.ceil(total / POSTS_PER_PAGE));
+    const start = (page - 1) * POSTS_PER_PAGE;
+    const posts = publishedPosts
+      .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
+      .slice(start, start + POSTS_PER_PAGE);
+
+    const [recents, categories] = await Promise.all([
+      this.blogService.findRecents(),
+      this.blogService.categoriesWithPostCounts(),
+    ]);
+
+    res.render('blog/author', {
+      author: user,
+      posts,
+      recents,
+      categories,
+      total,
+      totalPages,
+      page,
+      pager: buildPager(
+        `/author/${encodeURIComponent(slug)}`,
+        page,
+        totalPages,
       ),
     });
   }

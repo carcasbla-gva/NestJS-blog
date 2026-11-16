@@ -27,7 +27,10 @@ export class PagesController {
 
   @Get()
   async index(@Res() res: Response): Promise<void> {
-    const categories = await this.blogService.categoriesWithImages();
+    const [categories, featuredPosts] = await Promise.all([
+      this.blogService.categoriesWithImages(),
+      this.blogService.listPosts(1, 3, { featured: true }),
+    ]);
     // Extraer las primeras 3 imágenes para el carrusel hero
     const carouselImages: any[] = [];
     for (const cat of categories) {
@@ -38,7 +41,7 @@ export class PagesController {
       }
       if (carouselImages.length >= 3) break;
     }
-    res.render('pages/index', { categories, carouselImages });
+    res.render('pages/index', { categories, carouselImages, featuredPosts: featuredPosts.posts });
   }
 
   @Get('about')
