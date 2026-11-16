@@ -103,37 +103,11 @@ export class SeedService implements OnApplicationBootstrap {
   }
 
   private async seedUsers(): Promise<void> {
+    // No se crean usuarios de ejemplo: el administrador crea su propia cuenta.
     if ((await this.users.count()) > 0) {
       return;
     }
-
-    const [adminPassword, demoPassword] = await Promise.all([
-      bcrypt.hash('admin123', 10),
-      bcrypt.hash('demo123', 10),
-    ]);
-
-    await this.users.save([
-      this.users.create({
-        email: 'admin@blog.com',
-        name: 'Admin',
-        password: adminPassword,
-        roles: ['ROLE_ADMIN'],
-        bio: 'Administrador del blog de fotografía.',
-        emailVerified: true,
-      }),
-      this.users.create({
-        email: 'demo@blog.com',
-        name: 'Demo User',
-        password: demoPassword,
-        roles: [],
-        bio: 'Usuario de demostración.',
-        emailVerified: true,
-      }),
-    ]);
-
-    this.logger.log(
-      'Usuarios de ejemplo creados: admin@blog.com / admin123 y demo@blog.com / demo123',
-    );
+    this.logger.log('No hay usuarios en la base de datos. Regístrate para crear la primera cuenta.');
   }
 
   private async seedCategoriesAndImages(): Promise<void> {
@@ -143,22 +117,22 @@ export class SeedService implements OnApplicationBootstrap {
 
     const groups = [
       {
-        name: 'Landscapes',
+        name: 'Paisajes',
         description: 'Paisajes, montañas y luz natural.',
         files: ['1.jpg', '2.jpg', '3.jpg'],
       },
       {
-        name: 'Portraits',
+        name: 'Retratos',
         description: 'Retratos naturales y luz de ventana.',
         files: ['4.jpg', '5.jpg', '6.jpg'],
       },
       {
-        name: 'Weddings',
+        name: 'Bodas',
         description: 'Historias documentales de boda.',
         files: ['7.jpg', '8.jpg', '9.jpg'],
       },
       {
-        name: 'Street',
+        name: 'Calle',
         description: 'Fotografía urbana y momentos espontáneos.',
         files: ['10.jpg', '11.jpg', '12.jpg'],
       },
@@ -219,78 +193,78 @@ export class SeedService implements OnApplicationBootstrap {
 
     const examples = [
       {
-        title: 'Majestic Elephants in the Wild',
+        title: 'Elefantes majestuosos en la naturaleza',
         image: 'elephant.jpg',
-        category: 'Landscapes',
-        tags: ['wildlife', 'elephants', 'nature'],
+        category: 'Paisajes',
+        tags: ['vida silvestre', 'elefantes', 'naturaleza'],
         content:
-          'Elephants are among the most intelligent and emotionally complex animals on the planet. Photographing them in their natural habitat requires patience, respect and a great deal of luck. In this article we share how we approached the herd, the equipment we used and why golden hour light makes such a difference in wildlife photography.',
+          'Los elefantes son uno de los animales más inteligentes y emocionalmente complejos del planeta. Fotografizarlos en su hábitat natural requiere paciencia, respeto y mucha suerte. En este artículo compartimos cómo nos acercamos a la manada, el equipo que utilizamos y por qué la luz de la hora dorada marca una gran diferencia en la fotografía de vida silvestre.',
         likes: 24,
         views: 180,
         days: 14,
       },
       {
-        title: 'Family Moments That Last Forever',
+        title: 'Momentos familiares que duran para siempre',
         image: 'family.jpg',
-        category: 'Portraits',
-        tags: ['family', 'portrait', 'emotion'],
+        category: 'Retratos',
+        tags: ['familia', 'retrato', 'emoción'],
         content:
-          'A family session is not about perfect poses; it is about capturing the small gestures that make a family unique. Laughter, a shared look, a hand on a shoulder. We explain how we prepare each session so everyone feels comfortable in front of the camera.',
+          'Una sesión familiar no se trata de poses perfectas, sino de capturar los pequeños gestos que hacen única a una familia. Risas, una mirada compartida, una mano en el hombro. Explicamos cómo preparamos cada sesión para que todos se sientan cómodos frente a la cámara.',
         likes: 18,
         views: 142,
         days: 11,
       },
       {
-        title: 'A Window to the Landscape',
+        title: 'Una ventana al paisaje',
         image: 'landscape.jpg',
-        category: 'Landscapes',
-        tags: ['landscape', 'light', 'composition'],
+        category: 'Paisajes',
+        tags: ['paisaje', 'luz', 'composición'],
         content:
-          'Landscape photography is a conversation between light and terrain. We travel to remote locations before sunrise, wait for the fog to lift and let the scene reveal itself. These are our favourite tips for planning a landscape shoot and composing images with depth.',
+          'La fotografía de paisajes es una conversación entre la luz y el terreno. Viajamos a lugares remotos antes del amanecer, esperamos a que se levante la niebla y dejamos que la escena se revele. Estos son nuestros consejos favoritos para planificar una sesión de paisajes y componer imágenes con profundidad.',
         likes: 31,
         views: 260,
         days: 9,
       },
       {
-        title: 'A Wedding to Remember',
+        title: 'Una boda para recordar',
         image: 'wedding.jpg',
-        category: 'Weddings',
-        tags: ['wedding', 'documentary', 'couple'],
+        category: 'Bodas',
+        tags: ['boda', 'documental', 'pareja'],
         content:
-          'Weddings are fast-moving stories with dozens of characters. Our documentary approach focuses on genuine emotion: the nervous preparation, the first look and the celebration that follows. Here is a complete timeline of a recent wedding we photographed.',
+          'Las bodas son historias de ritmo rápido con decenas de personajes. Nuestro enfoque documental se centra en la emoción genuina: los nerviosos preparativos, la primera mirada y la celebración que sigue. Aquí tienes la cronología completa de una boda reciente que fotografiamos.',
         likes: 42,
         views: 390,
         days: 6,
       },
       {
-        title: 'Portrait of a Woman',
+        title: 'Retrato de una mujer',
         image: 'woman.jpg',
-        category: 'Portraits',
-        tags: ['portrait', 'natural light', 'window'],
+        category: 'Retratos',
+        tags: ['retrato', 'luz natural', 'ventana'],
         content:
-          'Natural light portraits can be created almost anywhere. A window, a white wall and a patient subject are often enough. In this post we break down the lighting setup, the lens choice and the small directions that help people relax in front of the lens.',
+          'Los retratos con luz natural se pueden crear casi en cualquier lugar. Una ventana, una pared blanca y un sujeto paciente suelen ser suficientes. En este post analizamos la configuración de iluminación, la elección del objetivo y las pequeñas indicaciones que ayudan a las personas a relajarse frente al objetivo.',
         likes: 27,
         views: 210,
         days: 4,
       },
       {
-        title: 'Golden Hour in the Mountains',
+        title: 'Hora dorada en las montañas',
         image: 'landscape.jpg',
-        category: 'Street',
-        tags: ['mountains', 'golden hour', 'travel'],
+        category: 'Calle',
+        tags: ['montañas', 'hora dorada', 'viajes'],
         content:
-          'The hour after sunrise and before sunset transforms ordinary landscapes. Warm light, long shadows and soft contrast create images that need very little editing. We share a few locations close to the city where you can practise golden hour photography.',
+          'La hora después del amanecer y antes del atardecer transforma los paisajes ordinarios. Luz cálida, sombras largas y contraste suave crean imágenes que necesitan muy poco retoque. Compartimos algunos lugares cerca de la ciudad donde puedes practicar la fotografía de hora dorada.',
         likes: 15,
         views: 98,
         days: 2,
       },
       {
-        title: 'The Art of Black and White Portraits',
+        title: 'El arte del retrato en blanco y negro',
         image: 'woman.jpg',
-        category: 'Portraits',
-        tags: ['black and white', 'portrait', 'texture'],
+        category: 'Retratos',
+        tags: ['blanco y negro', 'retrato', 'textura'],
         content:
-          'Removing colour forces the viewer to focus on shape, texture and expression. Black and white portraiture is a timeless discipline. We explain how to expose for the highlights, when to convert an image and how to keep skin tones natural.',
+          'Eliminar el color obliga al espectador a centrarse en la forma, la textura y la expresión. El retrato en blanco y negro es una disciplina atemporal. Explicamos cómo exponer para las luces, cuándo convertir una imagen y cómo mantener los tonos de piel naturales.',
         likes: 11,
         views: 75,
         days: 1,
@@ -328,17 +302,17 @@ export class SeedService implements OnApplicationBootstrap {
 
       await this.comments.save([
         this.comments.create({
-          name: 'Alice Moore',
-          email: 'alice@example.com',
-          text: 'What a wonderful article. The part about respecting the animals is so important!',
+          name: 'Ana García',
+          email: 'ana@example.com',
+          text: '¡Qué artículo tan maravilloso! La parte sobre respetar a los animales es muy importante.',
           approved: true,
           publishedAt: daysAgo(13),
           post: first,
         }),
         this.comments.create({
-          name: 'David Clark',
+          name: 'David López',
           email: 'david@example.com',
-          text: 'Beautiful photograph. I would love to know which lens you used for this shot.',
+          text: 'Fotografía preciosa. Me encantaría saber qué objetivo usaste para este disparo.',
           approved: true,
           publishedAt: daysAgo(12),
           post: first,
@@ -346,7 +320,7 @@ export class SeedService implements OnApplicationBootstrap {
         this.comments.create({
           name: 'Carlos Ruiz',
           email: 'carlos@example.com',
-          text: 'Family sessions always feel more authentic when everybody is allowed to be themselves. Great work.',
+          text: 'Las sesiones familiares siempre se sienten más auténticas cuando todos pueden ser ellos mismos. Gran trabajo.',
           approved: true,
           publishedAt: daysAgo(10),
           post: second,

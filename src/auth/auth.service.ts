@@ -22,15 +22,27 @@ export class AuthService {
   ) {}
 
   async validateCredentials(
-    email: string,
+    identifier: string,
     password: string,
   ): Promise<User | null> {
-    const user = await this.usersService.findByEmail(email);
+    // Aceptar email o nombre de usuario como identificador
+    const identifierTrimmed = identifier.trim().toLowerCase();
+    let user = await this.usersService.findByEmail(identifierTrimmed);
+    
+    // Si no se encuentra por email, intentar por nombre
     if (!user) {
+      user = await this.usersService.findByNameOrEmail(identifierTrimmed);
+    }
+    
+    if (!user) {
+      this.logger.warn(`Usuario no encontrado: ${identifierTrimmed}`);
       return null;
     }
 
     const matches = await bcrypt.compare(password, user.password);
+    if (!matches) {
+      this.logger.warn(`Contraseña incorrecta para: ${user.email}`);
+    }
     return matches ? user : null;
   }
 

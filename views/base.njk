@@ -1,26 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}PhotographItem-Responsive Theme{% endblock %}</title>
+  <title>{% block title %}FotoBlog{% endblock %}</title>
   <meta name="description" content="{% block description %}Blog de fotografía: paisajes, retratos, bodas y calle.{% endblock %}">
   <link rel="canonical" href="{% block canonical %}{{ currentUrl }}{% endblock %}">
   <link rel="alternate" type="application/rss+xml" title="RSS del blog" href="{{ siteUrl }}/rss.xml">
 
-  <meta property="og:site_name" content="PhotographItem">
+  <meta property="og:site_name" content="FotoBlog">
   <meta property="og:type" content="{% block og_type %}website{% endblock %}">
-  <meta property="og:title" content="{% block og_title %}PhotographItem Blog{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}FotoBlog{% endblock %}">
   <meta property="og:description" content="{% block og_description %}Blog de fotografía: paisajes, retratos, bodas y calle.{% endblock %}">
   <meta property="og:url" content="{{ currentUrl }}">
   <meta property="og:image" content="{{ siteUrl }}{{ asset('images/logo/logo.JPG') }}">
   <meta name="twitter:card" content="summary_large_image">
   {% block head %}{% endblock %}
 
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- Bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
-  <!-- Bootstrap core css -->
+  <!-- Custom css -->
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
   <!-- Magnific-popup css -->
   <link rel="stylesheet" type="text/css" href="{{ asset('css/magnific-popup.css') }}">
@@ -37,87 +42,81 @@
 <body id="page-top">
 
   <!-- Navigation Bar -->
-  <nav class="navbar navbar-fixed-top navbar-default">
+  <nav class="navbar navbar-fixed-top">
     <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand page-scroll" href="/">
-          <span>[PHOTO]</span>
-        </a>
-      </div>
-      <div class="collapse navbar-collapse navbar-right" id="menu">
-        <ul class="nav navbar-nav">
-          <li class="lien {% if currentPath == '/' %}active{% endif %}">
-            <a href="/"><i class="fa fa-home sr-icons"></i> Home</a>
-          </li>
-          <li class="lien {% if currentPath == '/about' %}active{% endif %}">
-            <a href="/about"><i class="fa fa-bookmark sr-icons"></i> About</a>
-          </li>
-          <li class="lien {% if currentPath == '/blog' %}active{% endif %}">
-            <a href="/blog"><i class="fa fa-file-text sr-icons"></i> Blog</a>
-          </li>
-          <li class="lien {% if currentPath == '/contact' %}active{% endif %}">
-            <a href="/contact"><i class="fa fa-phone-square sr-icons"></i> Contact</a>
-          </li>
-          {% if currentUser %}
-            <li>
-              <a href="/profile"><i class="fa fa-user sr-icons"></i> {{ currentUser.name }}</a>
+      <div class="navbar-inner">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand page-scroll" href="/">
+            <i class="fa fa-camera"></i> FotoBlog
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="menu">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="{% if currentPath == '/' %}active{% endif %}">
+              <a href="/"><i class="fa fa-home"></i> Inicio</a>
             </li>
-            <li>
-              <a href="/blog/new"><i class="fa fa-plus-square sr-icons"></i> New post</a>
+            <li class="{% if currentPath == '/about' %}active{% endif %}">
+              <a href="/about"><i class="fa fa-info-circle"></i> Sobre nosotros</a>
             </li>
-            {% if currentUser.isAdmin %}
-              <li class="lien {% if currentPath and currentPath.startsWith('/admin') %}active{% endif %}">
-                <a href="/admin"><i class="fa fa-cog sr-icons"></i> Admin</a>
+            <li class="{% if currentPath == '/blog' %}active{% endif %}">
+              <a href="/blog"><i class="fa fa-file-text"></i> Blog</a>
+            </li>
+            <li class="{% if currentPath == '/contact' %}active{% endif %}">
+              <a href="/contact"><i class="fa fa-envelope"></i> Contacto</a>
+            </li>
+            {% if currentUser %}
+              <li class="dropdown">
+                <a href="/profile" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-user-circle"></i> {{ currentUser.email }} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/profile"><i class="fa fa-user"></i> {{ currentUser.name }}</a></li>
+                  <li><a href="/blog/new"><i class="fa fa-plus"></i> Nuevo post</a></li>
+                  {% if currentUser.isAdmin %}
+                    <li class="divider"></li>
+                    <li><a href="/admin"><i class="fa fa-cog"></i> Administración</a></li>
+                  {% endif %}
+                  <li class="divider"></li>
+                  <li><a href="/logout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
+                </ul>
+              </li>
+            {% else %}
+              <li class="{% if currentPath == '/login' %}active{% endif %}">
+                <a href="/login"><i class="fa fa-sign-in"></i> Entrar</a>
+              </li>
+              <li class="{% if currentPath == '/register' %}active{% endif %}">
+                <a href="/register" class="btn-register"><i class="fa fa-user-plus"></i> Registrarse</a>
               </li>
             {% endif %}
-            <li>
-              <a href="/logout"><i class="fa fa-sign-out sr-icons"></i> Logout</a>
-            </li>
-          {% else %}
-            <li class="lien {% if currentPath == '/login' %}active{% endif %}">
-              <a href="/login"><i class="fa fa-sign-in sr-icons"></i> Login</a>
-            </li>
-            <li class="lien {% if currentPath == '/register' %}active{% endif %}">
-              <a href="/register"><i class="fa fa-user-secret sr-icons"></i> Register</a>
-            </li>
-          {% endif %}
-        </ul>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
   <!-- End of Navigation Bar -->
 
-  {% if currentUser and not currentUser.emailVerified %}
-    <div class="container" style="margin-top: 70px;">
-      <div class="alert alert-warning">
-        Tu correo <strong>{{ currentUser.email }}</strong> aún no está verificado.
-        <a href="/profile">Ver detalles y reenviar el correo</a>.
-      </div>
-    </div>
-  {% endif %}
-
   {% if flash %}
-    <div class="container" style="margin-top: 70px;">
+    <div class="container" style="margin-top: 80px;">
       {% if flash.type == 'error' %}
         <div class="alert alert-danger alert-dismissible" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          {{ flash.message }}
+          <i class="fa fa-times-circle"></i> {{ flash.message }}
         </div>
       {% elif flash.type == 'success' %}
         <div class="alert alert-success alert-dismissible" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          {{ flash.message }}
+          <i class="fa fa-check-circle"></i> {{ flash.message }}
         </div>
       {% else %}
         <div class="alert alert-info alert-dismissible" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          {{ flash.message }}
+          <i class="fa fa-info-circle"></i> {{ flash.message }}
         </div>
       {% endif %}
     </div>
@@ -126,19 +125,39 @@
   {% block body %}{% endblock %}
 
   <!-- Footer -->
-  <footer class="home-page">
-    <div class="container text-muted text-center">
+  <footer class="site-footer">
+    <div class="container">
       <div class="row">
-        <ul class="nav col-sm-4">
-          <li class="footer-number"><i class="fa fa-phone sr-icons"></i> (00228)92229954 </li>
-          <li><i class="fa fa-envelope sr-icons"></i> kouvenceslas93@gmail.com</li>
-          <li>Photography Fanatic Template &copy; 2017</li>
-        </ul>
-        <ul class="list-inline social-buttons col-sm-4 col-sm-push-4">
-          <li><a href="#"><i class="fa fa-facebook sr-icons"></i></a></li>
-          <li><a href="#"><i class="fa fa-twitter sr-icons"></i></a></li>
-          <li><a href="#"><i class="fa fa-google-plus sr-icons"></i></a></li>
-        </ul>
+        <div class="col-sm-4 footer-col">
+          <h4><i class="fa fa-camera"></i> FotoBlog</h4>
+          <p>Descubre la belleza del mundo a través de nuestra lente. Fotografía profesional de paisajes, retratos, bodas y calle.</p>
+        </div>
+        <div class="col-sm-4 footer-col">
+          <h4>Enlaces rápidos</h4>
+          <ul class="footer-links">
+            <li><a href="/"><i class="fa fa-angle-right"></i> Inicio</a></li>
+            <li><a href="/about"><i class="fa fa-angle-right"></i> Sobre nosotros</a></li>
+            <li><a href="/blog"><i class="fa fa-angle-right"></i> Blog</a></li>
+            <li><a href="/contact"><i class="fa fa-angle-right"></i> Contacto</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-4 footer-col">
+          <h4>Contacto</h4>
+          <ul class="footer-contact">
+            <li><i class="fa fa-phone"></i> (00228) 92229954</li>
+            <li><i class="fa fa-envelope"></i> info@fotoblog.com</li>
+            <li><i class="fa fa-map-marker"></i> 35 North Drive, Adroukpape</li>
+          </ul>
+          <div class="social-links">
+            <a href="#" class="social-icon"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="social-icon"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fa fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fa fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 FotoBlog. Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>

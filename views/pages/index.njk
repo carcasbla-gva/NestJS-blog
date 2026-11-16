@@ -1,99 +1,120 @@
 {% extends "../base.njk" %}
+{% block title %}FotoBlog - Galería de Fotografía{% endblock %}
 {% block body %}
 <div id="index">
 
-  <!-- Header -->
-  <div class="row">
-    <div class="col-xs-12 intro">
-      <div class="carousel-inner">
-        <div class="item active">
-          <img class="img-responsive" src="{{ asset('images/index/woman.jpg') }}" alt="header picture">
-        </div>
-        <div class="carousel-caption">
-          <h1>FIND NICE PICTURES HERE</h1>
-          <hr>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Hero Carousel -->
+  <div class="hero-carousel carousel slide" data-ride="carousel" data-interval="5000">
 
-  <div id="index-body">
-    <!-- Pictures Navigation table -->
-    <div class="table-responsive">
-      <table class="table text-center">
-        <thead>
-          <tr>
-            {% for category in categories %}
-              <td>
-                <a class="link {% if loop.first %}active{% endif %}" href="#category{{ category.id }}" data-toggle="tab">
-                  {{ category.name }}
-                </a>
-              </td>
-            {% endfor %}
-          </tr>
-        </thead>
-      </table>
-      <hr>
-    </div>
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      {% for slide in carouselImages %}
+        <li data-target="#heroCarousel" data-slide-to="{{ loop.index0 }}"{% if loop.first %} class="active"{% endif %}></li>
+      {% endfor %}
+    </ol>
 
-    <!-- Navigation Table Content -->
-    <div class="tab-content">
-      {% for category in categories %}
-        <div id="category{{ category.id }}" class="tab-pane {% if loop.first %}active{% endif %}">
-          <div class="row popup-gallery">
-            {% for image in category.images %}
-              {% include "../partials/image.njk" %}
-            {% endfor %}
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" id="heroCarousel" role="listbox">
+      {% for slide in carouselImages %}
+        <div class="item{% if loop.first %} active{% endif %}" style="background-image: url('{{ asset('images/gallery/' ~ slide.image.file) }}')">
+          <div class="carousel-caption">
+            <h1>{{ slide.category.name }}</h1>
+            <p>{{ slide.category.description or 'Descubre nuestra colección de fotografía profesional' }}</p>
+            <a href="/blog" class="btn-hero">Explorar Blog <i class="fa fa-arrow-right"></i></a>
           </div>
         </div>
       {% endfor %}
     </div>
-    <!-- End of Navigation Table Content -->
-  </div><!-- End of Index-body box -->
 
-  <!-- Newsletter form -->
-  <div class="index-form text-center">
-    <h3>SUSCRIBE TO OUR NEWSLETTER</h3>
-    <h5>Suscribe to receive our News and Gifts</h5>
-    <form class="form-horizontal">
-      <div class="form-group">
-        <div class="col-xs-12 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
-          <input class="form-control" type="text" placeholder="Type here your email address">
-          <a href="" class="btn btn-lg sr-button">SUBSCRIBE</a>
-        </div>
-      </div>
-    </form>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#heroCarousel" role="button" data-slide="prev">
+      <i class="fa fa-chevron-left" aria-hidden="true"></i>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="right carousel-control" href="#heroCarousel" role="button" data-slide="next">
+      <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      <span class="sr-only">Siguiente</span>
+    </a>
   </div>
-  <!-- End of Newsletter form -->
 
-  <!-- Box within partners name and logo -->
-  <div class="last-box row">
-    <div class="col-xs-12 col-sm-4 col-sm-push-4 last-block">
-      <div class="partner-box text-center">
-        <p>
-          <i class="fa fa-map-marker fa-2x sr-icons"></i>
-          <span class="text-muted">35 North Drive, Adroukpape, PY 88105, Agoe Telessou</span>
-        </p>
-        <h4>Our Main Partners</h4>
-        <hr>
-        <div class="text-muted text-left">
-          <ul class="list-inline">
-            <li><img src="{{ asset('images/index/log2.jpg') }}" alt="logo"></li>
-            <li>First Partner Name</li>
-          </ul>
-          <ul class="list-inline">
-            <li><img src="{{ asset('images/index/log1.jpg') }}" alt="logo"></li>
-            <li>Second Partner Name</li>
-          </ul>
-          <ul class="list-inline">
-            <li><img src="{{ asset('images/index/log3.jpg') }}" alt="logo"></li>
-            <li>Third Partner Name</li>
-          </ul>
+  <!-- Category Tabs & Gallery -->
+  <div class="container">
+    <div class="category-tabs">
+      <!-- Category Navigation -->
+      <ul class="nav nav-tabs" role="tablist">
+        {% for category in categories %}
+          <li role="presentation"{% if loop.first %} class="active"{% endif %}>
+            <a href="#category{{ category.id }}" aria-controls="category{{ category.id }}" role="tab" data-toggle="tab">
+              {{ category.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Gallery Content -->
+      <div class="tab-content">
+        {% for category in categories %}
+          <div role="tabpanel" class="tab-pane{% if loop.first %} active{% endif %}" id="category{{ category.id }}">
+            <div class="gallery-grid">
+              {% for image in category.images %}
+                <div class="gallery-item">
+                  <a href="{{ asset('images/gallery/' ~ image.file) }}" class="image-popup">
+                    <img src="{{ asset('images/portfolio/' ~ image.file) }}" alt="{{ image.file }}" loading="lazy">
+                  </a>
+                  <div class="gallery-overlay">
+                    <a href="{{ asset('images/gallery/' ~ image.file) }}" class="image-popup" style="color: white; text-decoration: none;">
+                      <i class="fa fa-search-plus"></i> Ver imagen
+                    </a>
+                  </div>
+                  <div class="gallery-info">
+                    <h5>{{ image.file | replace({'.jpg': '', '.jpeg': '', '.png': '', '.webp': ''}) | title }}</h5>
+                    <div class="gallery-stats">
+                      <span class="views"><i class="fa fa-eye"></i> <span class="js-views-{{ image.id }}">{{ image.numViews }}</span></span>
+                      <span class="likes"><i class="fa fa-heart"></i> <span class="js-likes-{{ image.id }}">{{ image.numLikes }}</span></span>
+                      <span class="downloads"><i class="fa fa-download"></i> <span class="js-downloads-{{ image.id }}">{{ image.numDownloads }}</span></span>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Newsletter Section -->
+  <div class="newsletter-section">
+    <div class="container">
+      <h3><i class="fa fa-envelope-o"></i> Suscríbete al Newsletter</h3>
+      <p>Recibe las últimas novedades y fotografías directamente en tu correo</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Tu correo electrónico" required>
+        <button type="submit"><i class="fa fa-paper-plane"></i> Suscribirse</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Partners Section -->
+  <div class="container">
+    <div class="partners-section">
+      <h4><i class="fa fa-handshake-o"></i> Nuestros Partners</h4>
+      <div class="partners-grid">
+        <div class="partner-item">
+          <img src="{{ asset('images/index/log1.jpg') }}" alt="Partner 1">
+          <span>Canon España</span>
+        </div>
+        <div class="partner-item">
+          <img src="{{ asset('images/index/log2.jpg') }}" alt="Partner 2">
+          <span>Nikon Pro</span>
+        </div>
+        <div class="partner-item">
+          <img src="{{ asset('images/index/log3.jpg') }}" alt="Partner 3">
+          <span>Sony Alpha</span>
         </div>
       </div>
     </div>
   </div>
-  <!-- End of Box within partners name and logo -->
 
 </div><!-- End of index box -->
 

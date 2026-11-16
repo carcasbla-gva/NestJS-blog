@@ -1,12 +1,12 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
-{% block title %}Nuevo post | PhotographItem{% endblock %}
+{% block title %}Nuevo post | FotoBlog{% endblock %}
 {% block body %}
 <!-- Principal Content Start -->
 <div id="new-post">
   <div class="container">
     <div class="col-xs-12 col-sm-8 col-sm-push-2">
-      <h1>New Post</h1>
+      <h1>Nuevo post</h1>
       <hr class="divider">
 
       <form class="form-horizontal" action="/blog/new" method="post" enctype="multipart/form-data">
@@ -14,7 +14,7 @@
 
         <div class="form-group">
           <div class="col-xs-12">
-            <label for="title">Title</label>
+            <label for="title">Título</label>
             <input type="text" id="title" name="title" class="form-control" value="{{ values.title or '' }}">
             {{ forms.error(errors, 'title') }}
           </div>
@@ -22,7 +22,7 @@
 
         <div class="form-group">
           <div class="col-xs-12">
-            <label for="content">Content</label>
+            <label for="content">Contenido</label>
             <textarea id="content" name="content" class="form-control" rows="8">{{ values.content or '' }}</textarea>
             {{ forms.error(errors, 'content') }}
           </div>
@@ -30,7 +30,7 @@
 
         <div class="form-group">
           <div class="col-xs-12 col-sm-6">
-            <label for="category">Category</label>
+            <label for="category">Categoría</label>
             <select id="category" name="category" class="form-control">
               <option value="">-- Sin categoría --</option>
               {% for category in categories %}
@@ -40,7 +40,7 @@
             {{ forms.error(errors, 'category') }}
           </div>
           <div class="col-xs-12 col-sm-6">
-            <label for="tags">Tags</label>
+            <label for="tags">Etiquetas</label>
             <input type="text" id="tags" name="tags" class="form-control" placeholder="fotografía, viajes, luz" value="{{ values.tags or '' }}">
             <span class="help-block">Separa las etiquetas con comas.</span>
             {{ forms.error(errors, 'tags') }}
@@ -49,7 +49,7 @@
 
         <div class="form-group">
           <div class="col-xs-12">
-            <label for="image">Image</label>
+            <label for="image">Imagen</label>
             <input type="file" id="image" name="image" class="form-control" accept="image/jpeg,image/png">
             {{ forms.error(errors, 'image') }}
           </div>
@@ -66,7 +66,7 @@
 
         <div class="form-group">
           <div class="col-xs-12">
-            <button type="submit" class="pull-right btn btn-lg sr-button">Send</button>
+            <button type="submit" class="pull-right btn btn-lg sr-button">Enviar</button>
           </div>
         </div>
       </form>

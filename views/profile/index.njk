@@ -1,27 +1,12 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
-{% block title %}Mi perfil | PhotographItem{% endblock %}
+{% block title %}Mi perfil | FotoBlog{% endblock %}
 {% block body %}
 <div id="register">
   <div class="container">
     <div class="col-xs-12 col-sm-8 col-sm-push-2">
       <h1>Mi perfil</h1>
       <hr class="divider">
-
-      {% if currentUser.emailVerified %}
-        <div class="alert alert-success">
-          <i class="fa fa-check sr-icons"></i> Tu correo está verificado.
-        </div>
-      {% else %}
-        <div class="alert alert-warning">
-          <i class="fa fa-exclamation-triangle sr-icons"></i>
-          Tu correo todavía no está verificado.
-          <form action="/profile/resend-verification" method="post" style="display:inline">
-            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-            <button type="submit" class="btn btn-link" style="padding:0">Reenviar correo de verificación</button>
-          </form>
-        </div>
-      {% endif %}
 
       <h3>Datos personales</h3>
       <form action="/profile" method="post">

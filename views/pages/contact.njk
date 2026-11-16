@@ -1,76 +1,79 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
+{% block title %}Contacto - FotoBlog{% endblock %}
 {% block body %}
-<!-- Principal Content Start -->
 <div id="contact">
   <div class="container">
-    <div class="col-xs-12 col-sm-8 col-sm-push-2">
-      <h1>CONTACT US</h1>
-      <hr>
-      <p>Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
+    <!-- Header -->
+    <div class="contact-header">
+      <h1><i class="fa fa-envelope"></i> Contacto</h1>
+      <p>¿Tienes alguna pregunta o quieres trabajar con nosotros? No dudes en escribirnos.</p>
+    </div>
 
-      <form class="form-horizontal" action="/contact" method="post">
+    <!-- Contact Form -->
+    <div class="contact-form-card">
+      <form action="/contact" method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
-        <div class="form-group">
-          <div class="col-xs-6">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" class="form-control" value="{{ values.firstName or '' }}">
-            {{ forms.error(errors, 'firstName') }}
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="firstName"><i class="fa fa-user"></i> Nombre</label>
+              <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Tu nombre" value="{{ values.firstName or '' }}">
+              {{ forms.error(errors, 'firstName') }}
+            </div>
           </div>
-          <div class="col-xs-6">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" class="form-control" value="{{ values.lastName or '' }}">
-            {{ forms.error(errors, 'lastName') }}
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-xs-12">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control" value="{{ values.email or '' }}">
-            {{ forms.error(errors, 'email') }}
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="lastName"><i class="fa fa-user"></i> Apellidos</label>
+              <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Tus apellidos" value="{{ values.lastName or '' }}">
+              {{ forms.error(errors, 'lastName') }}
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-          <div class="col-xs-12">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject" class="form-control" value="{{ values.subject or '' }}">
-            {{ forms.error(errors, 'subject') }}
-          </div>
+          <label for="email"><i class="fa fa-envelope"></i> Email</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="tu@email.com" value="{{ values.email or '' }}">
+          {{ forms.error(errors, 'email') }}
         </div>
 
         <div class="form-group">
-          <div class="col-xs-12">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" class="form-control" rows="5">{{ values.message or '' }}</textarea>
-            {{ forms.error(errors, 'message') }}
-            <button type="submit" class="pull-right btn btn-lg sr-button">Send</button>
-          </div>
+          <label for="subject"><i class="fa fa-tag"></i> Asunto</label>
+          <input type="text" id="subject" name="subject" class="form-control" placeholder="¿En qué podemos ayudarte?" value="{{ values.subject or '' }}">
+          {{ forms.error(errors, 'subject') }}
         </div>
+
+        <div class="form-group">
+          <label for="message"><i class="fa fa-comment"></i> Mensaje</label>
+          <textarea id="message" name="message" class="form-control" rows="5" placeholder="Escribe tu mensaje aquí...">{{ values.message or '' }}</textarea>
+          {{ forms.error(errors, 'message') }}
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%;">
+          <i class="fa fa-paper-plane"></i> Enviar mensaje
+        </button>
       </form>
+    </div>
 
-      <hr class="divider">
-      <div class="address">
-        <h3>GET IN TOUCH</h3>
-        <hr>
-        <p>Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero.</p>
-        <div class="ending text-center">
-          <ul class="list-inline social-buttons">
-            <li><a href="#"><i class="fa fa-facebook sr-icons"></i></a></li>
-            <li><a href="#"><i class="fa fa-twitter sr-icons"></i></a></li>
-            <li><a href="#"><i class="fa fa-google-plus sr-icons"></i></a></li>
-          </ul>
-          <ul class="list-inline contact">
-            <li class="footer-number"><i class="fa fa-phone sr-icons"></i> (00228)92229954 </li>
-            <li><i class="fa fa-envelope sr-icons"></i> kouvenceslas93@gmail.com</li>
-          </ul>
-          <p>Photography Fanatic Template &copy; 2017</p>
-        </div>
+    <!-- Contact Info Cards -->
+    <div class="contact-info-cards">
+      <div class="contact-info-card">
+        <i class="fa fa-phone"></i>
+        <h5>Teléfono</h5>
+        <p>(00228) 92229954</p>
+      </div>
+      <div class="contact-info-card">
+        <i class="fa fa-envelope"></i>
+        <h5>Email</h5>
+        <p>info@fotoblog.com</p>
+      </div>
+      <div class="contact-info-card">
+        <i class="fa fa-map-marker"></i>
+        <h5>Dirección</h5>
+        <p>35 North Drive, Adroukpape</p>
       </div>
     </div>
   </div>
 </div>
-<!-- Principal Content Start -->
 {% endblock %}

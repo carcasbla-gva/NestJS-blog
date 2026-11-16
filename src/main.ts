@@ -76,16 +76,19 @@ async function bootstrap(): Promise<void> {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
-  const isProduction = config.get<string>('NODE_ENV') === 'production';
+  const isProduction = process.env.NODE_ENV === 'production';
 
   app.set('trust proxy', 1);
 
   // Cabeceras de seguridad. Se desactiva la CSP para no romper los scripts
   // y estilos inline que trae la plantilla original.
+  // HSTS se activa solo en producción; en desarrollo se desactiva para evitar
+  // que el navegador fuerce HTTPS cuando la app corre en http://localhost.
   app.use(
     helmet({
       contentSecurityPolicy: false,
       crossOriginEmbedderPolicy: false,
+      hsts: isProduction,
     }),
   );
 
@@ -186,7 +189,7 @@ async function bootstrap(): Promise<void> {
     }
     res.status(404).json({
       statusCode: 404,
-      message: 'Not Found',
+      message: 'Página no encontrada',
     });
   });
 
@@ -215,7 +218,7 @@ async function bootstrap(): Promise<void> {
       }
       res.status(500).json({
         statusCode: 500,
-        message: 'Internal server error',
+        message: 'Error interno del servidor',
       });
     },
   );

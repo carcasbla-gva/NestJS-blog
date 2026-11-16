@@ -1,8 +1,10 @@
-<ul class="nav nav-pills" style="margin-bottom: 20px;">
-  <li role="presentation" class="{% if currentPath == '/admin' %}active{% endif %}"><a href="/admin">Dashboard</a></li>
-  <li role="presentation" class="{% if currentPath == '/admin/posts' %}active{% endif %}"><a href="/admin/posts">Posts</a></li>
-  <li role="presentation" class="{% if currentPath == '/admin/categories' %}active{% endif %}"><a href="/admin/categories">Categorías</a></li>
-  <li role="presentation" class="{% if currentPath == '/admin/images' %}active{% endif %}"><a href="/admin/images">Imágenes</a></li>
-  <li role="presentation" class="{% if currentPath == '/admin/comments' %}active{% endif %}"><a href="/admin/comments">Comentarios</a></li>
-  <li role="presentation" class="{% if currentPath == '/admin/messages' %}active{% endif %}"><a href="/admin/messages">Mensajes</a></li>
-</ul>
+<div class="admin-nav">
+  <ul>
+    <li><a href="/admin" class="{% if currentPath == '/admin' %}active{% endif %}"><i class="fa fa-dashboard"></i> Panel</a></li>
+    <li><a href="/admin/posts" class="{% if currentPath == '/admin/posts' %}active{% endif %}"><i class="fa fa-file-text-o"></i> Posts</a></li>
+    <li><a href="/admin/categories" class="{% if currentPath == '/admin/categories' %}active{% endif %}"><i class="fa fa-tags"></i> Categorías</a></li>
+    <li><a href="/admin/images" class="{% if currentPath == '/admin/images' %}active{% endif %}"><i class="fa fa-image"></i> Imágenes</a></li>
+    <li><a href="/admin/comments" class="{% if currentPath == '/admin/comments' %}active{% endif %}"><i class="fa fa-comments"></i> Comentarios</a></li>
+    <li><a href="/admin/messages" class="{% if currentPath == '/admin/messages' %}active{% endif %}"><i class="fa fa-envelope-o"></i> Mensajes</a></li>
+  </ul>
+</div>

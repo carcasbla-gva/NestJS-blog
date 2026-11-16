@@ -1,5 +1,5 @@
 {% extends "../base.njk" %}
-{% block title %}Blog{% if category %} · {{ category.name }}{% endif %}{% if searchTerm %} · {{ searchTerm }}{% endif %} | PhotographItem{% endblock %}
+{% block title %}Blog{% if category %} · {{ category.name }}{% endif %}{% if searchTerm %} · {{ searchTerm }}{% endif %} | FotoBlog{% endblock %}
 {% block description %}Artículos de fotografía sobre paisajes, retratos, bodas y calle.{% endblock %}
 
 {% block body %}
@@ -45,7 +45,7 @@
         </form>
         <div class="panel">
           <div class="panel-heading">
-            <h4>Categories</h4>
+            <h4>Categorías</h4>
           </div>
           <div class="panel-body">
             <ul class="nav">
@@ -65,7 +65,7 @@
           <h4>Suscríbete</h4>
           <p><a href="/rss.xml">RSS del blog</a> · <a href="/sitemap.xml">Sitemap</a></p>
         </div>
-        <h3>Recent Posts</h3>
+        <h3>Posts recientes</h3>
         <hr>
         {% for recent in recents %}
           {% include "../partials/recent_post.njk" %}

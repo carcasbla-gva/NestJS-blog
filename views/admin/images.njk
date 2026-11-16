@@ -1,6 +1,6 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
-{% block title %}Admin · Imágenes | PhotographItem{% endblock %}
+{% block title %}Admin · Imágenes | FotoBlog{% endblock %}
 {% block body %}
 <div id="images">
   <div class="container">
@@ -25,17 +25,17 @@
 
           <div class="form-group">
             <div class="col-xs-4">
-              <label for="numLikes">Likes</label>
+              <label for="numLikes">Me gusta</label>
               <input type="number" id="numLikes" name="numLikes" class="form-control" value="{{ values.numLikes or 0 }}">
               {{ forms.error(errors, 'numLikes') }}
             </div>
             <div class="col-xs-4">
-              <label for="numViews">Views</label>
+              <label for="numViews">Vistas</label>
               <input type="number" id="numViews" name="numViews" class="form-control" value="{{ values.numViews or 0 }}">
               {{ forms.error(errors, 'numViews') }}
             </div>
             <div class="col-xs-4">
-              <label for="numDownloads">Downloads</label>
+              <label for="numDownloads">Descargas</label>
               <input type="number" id="numDownloads" name="numDownloads" class="form-control" value="{{ values.numDownloads or 0 }}">
               {{ forms.error(errors, 'numDownloads') }}
             </div>
@@ -74,15 +74,15 @@
 
           <div class="row">
             <div class="col-xs-4">
-              <label for="bulkLikes">Likes</label>
+              <label for="bulkLikes">Me gusta</label>
               <input type="number" id="bulkLikes" name="numLikes" class="form-control" value="0">
             </div>
             <div class="col-xs-4">
-              <label for="bulkViews">Views</label>
+              <label for="bulkViews">Vistas</label>
               <input type="number" id="bulkViews" name="numViews" class="form-control" value="0">
             </div>
             <div class="col-xs-4">
-              <label for="bulkDownloads">Downloads</label>
+              <label for="bulkDownloads">Descargas</label>
               <input type="number" id="bulkDownloads" name="numDownloads" class="form-control" value="0">
             </div>
           </div>
@@ -138,15 +138,15 @@
 
                   <div class="row" style="margin-top:5px">
                     <div class="col-xs-4">
-                      <label class="small">Likes</label>
+                      <label class="small">Me gusta</label>
                       <input type="number" name="numLikes" class="form-control input-sm" value="{{ image.numLikes }}">
                     </div>
                     <div class="col-xs-4">
-                      <label class="small">Views</label>
+                      <label class="small">Vistas</label>
                       <input type="number" name="numViews" class="form-control input-sm" value="{{ image.numViews }}">
                     </div>
                     <div class="col-xs-4">
-                      <label class="small">Downloads</label>
+                      <label class="small">Descargas</label>
                       <input type="number" name="numDownloads" class="form-control input-sm" value="{{ image.numDownloads }}">
                     </div>
                   </div>

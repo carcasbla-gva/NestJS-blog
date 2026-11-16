@@ -26,7 +26,9 @@ export class AuthController {
   loginForm(@Req() req: Request, @Res() res: Response): void {
     const lastUsername = req.session.lastUsername ?? '';
     delete req.session.lastUsername;
-    res.render('auth/login', { lastUsername });
+    res.render('auth/login', { 
+      lastUsername,
+    });
   }
 
   @Post('login')
@@ -39,13 +41,22 @@ export class AuthController {
         ? req.body._password
         : formString(req.body.password);
 
+    if (!email || !password) {
+      req.session.flash = {
+        type: 'error',
+        message: 'Por favor, introduce tu email y contraseña.',
+      };
+      res.redirect('/login');
+      return;
+    }
+
     const user = await this.authService.validateCredentials(email, password);
 
     if (!user) {
       req.session.lastUsername = email;
       req.session.flash = {
         type: 'error',
-        message: 'Invalid credentials.',
+        message: 'Credenciales incorrectas. Verifica tu email y contraseña.',
       };
       res.redirect('/login');
       return;
@@ -60,7 +71,7 @@ export class AuthController {
     req.session.userId = user.id;
     req.session.flash = {
       type: 'success',
-      message: `Bienvenido de nuevo, ${user.name}.`,
+      message: `¡Bienvenido/a ${user.name}! Has iniciado sesión como ${user.email}.`,
     };
     res.redirect('/');
   }
@@ -98,26 +109,26 @@ export class AuthController {
     const errors: Record<string, string> = {};
 
     if (!values.email) {
-      errors.email = 'Please enter your email';
+      errors.email = 'Introduce tu email';
     } else if (!isEmail(values.email)) {
-      errors.email = `${values.email} is not a valid email`;
+      errors.email = `${values.email} no es un email válido`;
     } else if (await this.usersService.findByEmail(values.email)) {
-      errors.email = 'There is already an account with this email';
+      errors.email = 'Ya existe una cuenta con este email';
     }
 
     if (!values.name) {
-      errors.name = 'Please enter your name';
+      errors.name = 'Introduce tu nombre';
     }
 
     if (!password) {
-      errors.plainPassword = 'Please enter a password';
+      errors.plainPassword = 'Introduce una contraseña';
     } else if (password.length < 6) {
       errors.plainPassword =
-        'Your password should be at least 6 characters';
+        'La contraseña debe tener al menos 6 caracteres';
     }
 
     if (!agreeTerms) {
-      errors.agreeTerms = 'You should agree to our terms.';
+      errors.agreeTerms = 'Debes aceptar nuestros términos.';
     }
 
     if (Object.keys(errors).length > 0) {
@@ -131,19 +142,15 @@ export class AuthController {
       name: values.name,
       password: hashedPassword,
       roles: [],
-      emailVerified: false,
-      verificationToken: randomBytes(32).toString('hex'),
+      emailVerified: true,
     });
-
-    await this.authService.sendVerificationEmail(user, baseUrl(req));
 
     req.session.userId = user.id;
     req.session.flash = {
       type: 'success',
-      message:
-        'Tu cuenta se ha creado. Revisa tu correo para verificarla (en desarrollo el enlace aparece en la consola del servidor).',
+      message: '¡Tu cuenta se ha creado correctamente! Ya puedes iniciar sesión.',
     };
-    res.redirect('/');
+    res.redirect('/login');
   }
 
   @Get('forgot-password')

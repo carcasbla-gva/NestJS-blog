@@ -1,160 +1,152 @@
 {% extends "../base.njk" %}
+{% block title %}Sobre nosotros - FotoBlog{% endblock %}
 {% block body %}
 <div id="about">
 
-  <!-- Header -->
-  <div class="row">
-    <div class="col-xs-12 intro">
-      <div class="carousel-inner">
-        <div class="item active">
-          <img class="img-responsive" src="{{ asset('images/about_us.jpg') }}" alt="header picture">
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="container">
+      <h1><i class="fa fa-camera"></i> Sobre Nosotros</h1>
+      <p>Somos un equipo apasionado por la fotografía que captura momentos únicos y los convierte en recuerdos eternos.</p>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="container about-content">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="about-card">
+          <i class="fa fa-institution"></i>
+          <h4>Nuestro Estudio</h4>
+          <p>Somos un estudio de fotografía profesional con más de 10 años de experiencia. Nos especializamos en capturar la esencia de cada momento, desde paisajes impresionantes hasta retratos íntimos y bodas inolvidables.</p>
         </div>
-        <div class="carousel-caption">
-          <h1>ABOUT US</h1>
-          <p>About Us and our Services?</p>
-          <hr>
+      </div>
+      <div class="col-sm-6">
+        <div class="about-card">
+          <i class="fa fa-users"></i>
+          <h4>Nuestro Equipo</h4>
+          <p>Contamos con un equipo de fotógrafos talentosos y apasionados, cada uno con su especialidad. Juntos creamos imágenes que cuentan historias y transmiten emociones únicas.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <div class="row" style="margin-top: 40px;">
+      <div class="col-sm-12 text-center mb-40">
+        <h2><i class="fa fa-tasks text-primary"></i> Nuestros Servicios</h2>
+        <p class="text-gray">Ofrecemos una amplia gama de servicios fotográficos profesionales</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="about-card text-center">
+          <i class="fa fa-image"></i>
+          <h4>Edición Fotográfica</h4>
+          <p>Retoque profesional y edición de imágenes con las últimas herramientas de Photoshop y Lightroom.</p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="about-card text-center">
+          <i class="fa fa-camera"></i>
+          <h4>Sesiones Fotográficas</h4>
+          <p>Sesiones personalizadas para retratos, bodas, eventos y fotografía de producto.</p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="about-card text-center">
+          <i class="fa fa-graduation-cap"></i>
+          <h4>Formación</h4>
+          <p>Cursos y talleres de fotografía para todos los niveles, desde principiantes hasta avanzados.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="row" style="margin-top: 60px;">
+      <div class="col-sm-12 text-center mb-40">
+        <h2><i class="fa fa-graduation-cap text-primary"></i> Planes de Formación</h2>
+        <p class="text-gray">Elige el plan que mejor se adapte a tus necesidades</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="about-card text-center" style="border-top: 4px solid var(--primary);">
+          <h4 style="color: var(--primary);">Principiante</h4>
+          <h2 style="color: var(--primary);">$99</h2>
+          <ul class="list-unstyled" style="text-align: left; margin: 20px 0;">
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Fundamentos de fotografía</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Uso de cámara manual</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Composición básica</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Edición introductoria</li>
+          </ul>
+          <a href="/contact" class="btn-primary">Inscribirse</a>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="about-card text-center" style="border-top: 4px solid var(--dark);">
+          <h4 style="color: var(--dark);">Intermedio</h4>
+          <h2 style="color: var(--dark);">$199</h2>
+          <ul class="list-unstyled" style="text-align: left; margin: 20px 0;">
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Todo lo de Principiante</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Iluminación profesional</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Edición avanzada</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Prácticas en estudio</li>
+          </ul>
+          <a href="/contact" class="btn-primary">Inscribirse</a>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="about-card text-center" style="border-top: 4px solid var(--secondary);">
+          <h4 style="color: var(--secondary);">Profesional</h4>
+          <h2 style="color: var(--secondary);">$299</h2>
+          <ul class="list-unstyled" style="text-align: left; margin: 20px 0;">
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Todo lo de Intermedio</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Mentoría personalizada</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Portfolio profesional</li>
+            <li style="padding: 8px 0; color: var(--gray);"><i class="fa fa-check text-primary" style="margin-right: 8px;"></i> Certificado profesional</li>
+          </ul>
+          <a href="/contact" class="btn-secondary">Inscribirse</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="row" style="margin-top: 60px;">
+      <div class="col-sm-12 text-center mb-40">
+        <h2><i class="fa fa-quote-left text-primary"></i> Opiniones de Clientes</h2>
+        <p class="text-gray">Lo que dicen nuestros clientes sobre nosotros</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="about-card text-center">
+          <img src="{{ asset('images/clients/client1.jpg') }}" alt="Cliente" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
+          <h5 style="margin-bottom: 10px;">María García</h5>
+          <p style="font-style: italic; color: var(--gray); font-size: 14px;">"Excelente servicio y resultados increíbles. Muy recomendados."</p>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="about-card text-center">
+          <img src="{{ asset('images/clients/client2.jpg') }}" alt="Cliente" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
+          <h5 style="margin-bottom: 10px;">Carlos López</h5>
+          <p style="font-style: italic; color: var(--gray); font-size: 14px;">"Las fotos de nuestra boda quedaron espectaculares. ¡Gracias!"</p>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="about-card text-center">
+          <img src="{{ asset('images/clients/client3.jpg') }}" alt="Cliente" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
+          <h5 style="margin-bottom: 10px;">Ana Martínez</h5>
+          <p style="font-style: italic; color: var(--gray); font-size: 14px;">"El curso de fotografía superó todas mis expectativas."</p>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="about-card text-center">
+          <img src="{{ asset('images/clients/client4.jpg') }}" alt="Cliente" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
+          <h5 style="margin-bottom: 10px;">Pedro Sánchez</h5>
+          <p style="font-style: italic; color: var(--gray); font-size: 14px;">"Profesionalismo y creatividad en cada sesión. ¡Volveré!"</p>
         </div>
       </div>
     </div>
   </div>
-  <!-- End of header -->
-
-  <!-- Container Box -->
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-6">
-        <div class="box-about">
-          <i class="fa fa-institution fa-2x"></i>
-          <h4>About Our Studio</h4>
-          <p class="text-left text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.Tempora ea ratione vel nisi, qui perferendis nulla, fugit
-            aut, beatae, tempore modi. Minus sequi iste, nam nobis, excepturi.Ut enim ad enim ad minim veniam, quis
-            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure.</p>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-        <div class="box-about">
-          <i class="fa fa-group fa-2x"></i>
-          <h4>About Our Team</h4>
-          <p class="text-left text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.Tempora ea ratione vel nisi, qui perferendis nulla, fugit
-            aut, beatae, tempore modi. Minus sequi iste, nam nobis, excepturi.Ut enim ad enim ad minim veniam, quis
-            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure.</p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-6 row">
-        <ul class="list-inline text-center">
-          <li class="line"></li>
-          <li><i class="fa fa-tasks fa-2x"></i></li>
-          <li class="line"></li>
-          <li>
-            <h4>Our Services</h4>
-          </li>
-          <li class="line"></li>
-        </ul>
-        <p class="text-muted text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua.Tempora ea ratione vel nisi, qui perferendis nulla, fugit
-          aut, beatae, tempore modi.</p>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-        <p class="text-muted"><strong>PHOTOSHOP</strong> <span class="pull-right">80%</span></p>
-        <div class="progress">
-          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="80" aria-valuemin="0"
-            aria-valuemax="100" style="width:80%;"></div>
-        </div>
-        <p class="text-muted"><strong>SHOOTING PHOTO </strong><span class="pull-right">95%</span></p>
-        <div class="progress">
-          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="95" aria-valuemin="0"
-            aria-valuemax="100" style="width:95%;"></div>
-        </div>
-        <p class="text-muted"><strong>FORMATION</strong><span class="pull-right">90%</span></p>
-        <div class="progress">
-          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="90" aria-valuemin="0"
-            aria-valuemax="100" style="width:90%;"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pricing Tables -->
-    <div class="row pricing text-center">
-      <h3>FORMATION PRICING TABLES</h3>
-      <hr>
-      <div class="col-xs-12 col-sm-4 first">
-        <div class="beginner">
-          <h4>BEGINNER</h4>
-          <h5>$99.97</h5>
-          <ul class="nav">
-            <li>Beginner Option I</li>
-            <li>Beginner Option II</li>
-            <li>Beginner Option III</li>
-            <li>Beginner Option IV</li>
-            <li>Beginner Option V</li>
-          </ul>
-          <a href="#" class="btn btn-lg sr-button">SIGN UP</a>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-4 middle">
-        <div class="intermediary">
-          <h4>INTERMEDIARY</h4>
-          <h5>$199.97</h5>
-          <ul class="nav">
-            <li>Intermediary Option I</li>
-            <li>Intermediary Option II</li>
-            <li>Intermediary Option III</li>
-            <li>Intermediary Option IV</li>
-            <li>Intermediary Option V</li>
-          </ul>
-          <a href="#" class="btn btn-lg sr-button">SIGN UP</a>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <div class="higher">
-          <h4>PROFESSIONAL</h4>
-          <h5>$299.97</h5>
-          <ul class="nav">
-            <li>High Option I</li>
-            <li>High Option II</li>
-            <li>High Option III</li>
-            <li>High Option IV</li>
-            <li>High Option V</li>
-          </ul>
-          <a href="#" class="btn btn-lg sr-button">SIGN UP</a>
-        </div>
-      </div>
-    </div>
-    <!-- End of Pricing Tables -->
-
-    <!-- Clients Feedback -->
-    <div class="row feedback text-center">
-      <h3>CLIENTS FEEDBACK</h3>
-      <hr>
-      <div class="col-xs-12 col-sm-3">
-        <img class="img-responsive" src="{{ asset('images/clients/client1.jpg') }}" alt="client's picture">
-        <h5>MISS BELLA</h5>
-        <q>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</q>
-      </div>
-      <div class="col-xs-12 col-sm-3">
-        <img class="img-responsive" src="{{ asset('images/clients/client2.jpg') }}" alt="client's picture">
-        <h5>DON PENO</h5>
-        <q>Tempora ea ratione vel nisi, qui perferendis nulla, fugit aut, beatae, tempore modi.</q>
-      </div>
-      <div class="col-xs-12 col-sm-3">
-        <img class="img-responsive" src="{{ asset('images/clients/client3.jpg') }}" alt="client's picture">
-        <h5>SWEETY</h5>
-        <q>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</q>
-      </div>
-      <div class="col-xs-12 col-sm-3">
-        <img class="img-responsive" src="{{ asset('images/clients/client4.jpg') }}" alt="client's picture">
-        <h5>LADY</h5>
-        <q>Tempora ea ratione vel nisi, qui perferendis nulla, fugit aut, beatae, tempore modi.</q>
-      </div>
-    </div>
-    <!-- End of Clients Feedback -->
-
-  </div>
-  <!-- End of container Box -->
 </div>
-<!-- End of principal content -->
 {% endblock %}

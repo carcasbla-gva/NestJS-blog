@@ -18,6 +18,13 @@ export class UsersService {
     return this.users.findOne({ where: { email } });
   }
 
+  findByNameOrEmail(identifier: string): Promise<User | null> {
+    return this.users.createQueryBuilder('user')
+      .where('LOWER(user.name) LIKE :identifier', { identifier: `%${identifier}%` })
+      .orWhere('LOWER(user.email) LIKE :identifier', { identifier: `%${identifier}%` })
+      .getOne();
+  }
+
   findByVerificationToken(token: string): Promise<User | null> {
     return this.users.findOne({ where: { verificationToken: token } });
   }

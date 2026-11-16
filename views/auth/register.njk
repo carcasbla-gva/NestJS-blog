@@ -1,40 +1,49 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
+{% block title %}Registrarse - FotoBlog{% endblock %}
 {% block body %}
-<div id="register">
-  <div class="container">
-    <h1>Register</h1>
+<div class="auth-page">
+  <div class="auth-card">
+    <h2><i class="fa fa-user-plus text-primary"></i> Crear cuenta</h2>
+    <p class="auth-subtitle">Únete a nuestra comunidad de fotógrafos</p>
 
     <form action="/register" method="post">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
       <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" class="form-control" value="{{ values.email or '' }}">
+        <label for="email"><i class="fa fa-envelope"></i> Email</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="tu@email.com" value="{{ values.email or '' }}">
         {{ forms.error(errors, 'email') }}
       </div>
 
       <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" class="form-control" value="{{ values.name or '' }}">
+        <label for="name"><i class="fa fa-user"></i> Nombre</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="Tu nombre" value="{{ values.name or '' }}">
         {{ forms.error(errors, 'name') }}
       </div>
 
       <div class="form-group">
-        <label for="plainPassword">Password</label>
-        <input type="password" id="plainPassword" name="plainPassword" class="form-control" autocomplete="new-password">
+        <label for="plainPassword"><i class="fa fa-lock"></i> Contraseña</label>
+        <input type="password" id="plainPassword" name="plainPassword" class="form-control" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
         {{ forms.error(errors, 'plainPassword') }}
       </div>
 
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" name="agreeTerms" value="1"> I agree to the terms and conditions
+      <div style="margin-bottom: 20px;">
+        <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-weight: 400; font-size: 14px;">
+          <input type="checkbox" name="agreeTerms" value="1" style="margin-top: 3px;">
+          <span>Acepto los <a href="#" style="color: var(--primary);">términos y condiciones</a></span>
         </label>
         {{ forms.error(errors, 'agreeTerms') }}
       </div>
 
-      <button type="submit" class="pull-right btn btn-lg sr-button">Register</button>
+      <button class="btn-auth" type="submit">
+        <i class="fa fa-user-plus"></i> Crear cuenta
+      </button>
     </form>
+
+    <div class="auth-footer">
+      ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
+    </div>
   </div>
 </div>
 {% endblock %}

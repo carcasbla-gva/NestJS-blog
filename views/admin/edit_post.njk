@@ -1,6 +1,6 @@
 {% extends "../base.njk" %}
 {% import "../macros/forms.njk" as forms %}
-{% block title %}Editar post | PhotographItem{% endblock %}
+{% block title %}Editar post | FotoBlog{% endblock %}
 {% block body %}
 <div id="new-post">
   <div class="container">
@@ -20,7 +20,7 @@
 
         <div class="form-group">
           <div class="col-xs-12">
-            <label for="title">Title</label>
+            <label for="title">Título</label>
             <input type="text" id="title" name="title" class="form-control" value="{{ values.title or '' }}">
             {{ forms.error(errors, 'title') }}
           </div>
@@ -28,7 +28,7 @@
 
         <div class="form-group">
           <div class="col-xs-12">
-            <label for="content">Content</label>
+            <label for="content">Contenido</label>
             <textarea id="content" name="content" class="form-control" rows="10">{{ values.content or '' }}</textarea>
             {{ forms.error(errors, 'content') }}
           </div>
@@ -36,7 +36,7 @@
 
         <div class="form-group">
           <div class="col-xs-12 col-sm-6">
-            <label for="category">Category</label>
+            <label for="category">Categoría</label>
             <select id="category" name="category" class="form-control">
               <option value="">-- Sin categoría --</option>
               {% for category in categories %}
@@ -46,7 +46,7 @@
             {{ forms.error(errors, 'category') }}
           </div>
           <div class="col-xs-12 col-sm-6">
-            <label for="tags">Tags</label>
+            <label for="tags">Etiquetas</label>
             <input type="text" id="tags" name="tags" class="form-control" value="{{ values.tags or '' }}">
             {{ forms.error(errors, 'tags') }}
           </div>
