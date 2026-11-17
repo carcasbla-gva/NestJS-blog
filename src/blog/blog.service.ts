@@ -362,7 +362,7 @@ export class BlogService {
       .andWhere('post.id != :id', { id: currentPost.id });
 
     if (currentPost.category) {
-      query.andWhere('post.categoryId = :categoryId', {
+      query.andWhere('post.category_id = :categoryId', {
         categoryId: currentPost.category.id,
       });
     } else if (currentPost.tags && currentPost.tags.length > 0) {
