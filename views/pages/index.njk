@@ -4,7 +4,7 @@
 <div id="index">
 
   <!-- Hero Carousel -->
-  <div class="hero-carousel carousel slide" data-ride="carousel" data-interval="5000">
+  <div class="hero-carousel carousel slide" id="heroCarousel" data-ride="carousel" data-interval="5000">
 
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -14,7 +14,7 @@
     </ol>
 
     <!-- Wrapper for slides -->
-    <div class="carousel-inner" id="heroCarousel" role="listbox">
+    <div class="carousel-inner" role="listbox">
       {% for slide in carouselImages %}
         <div class="item{% if loop.first %} active{% endif %}" style="background-image: url('{{ asset('images/gallery/' ~ slide.image.file) }}')">
           <div class="carousel-caption">
@@ -39,7 +39,7 @@
 
   <!-- Category Tabs & Gallery -->
   <div class="container">
-    <div class="category-tabs">
+    <div class="category-tabs animate-on-scroll">
       <!-- Category Navigation -->
       <ul class="nav nav-tabs" role="tablist">
         {% for category in categories %}
@@ -57,7 +57,7 @@
           <div role="tabpanel" class="tab-pane{% if loop.first %} active{% endif %}" id="category{{ category.id }}">
             <div class="gallery-grid">
               {% for image in category.images %}
-                <div class="gallery-item">
+                <div class="gallery-item animate-on-scroll animate-scale" style="transition-delay: {{ loop.index0 * 0.05 }}s;">
                   <a href="{{ asset('images/gallery/' ~ image.file) }}" class="image-popup">
                     <img src="{{ asset('images/portfolio/' ~ image.file) }}" alt="{{ image.file }}" loading="lazy">
                   </a>
@@ -87,11 +87,11 @@
   {% if featuredPosts and featuredPosts.length %}
   <div style="padding: 60px 0; background: #f9f9f9;">
     <div class="container">
-      <h3 style="text-align:center; margin-bottom:30px;"><i class="fa fa-star"></i> Posts Destacados</h3>
+      <h3 class="animate-on-scroll" style="text-align:center; margin-bottom:30px;"><i class="fa fa-star"></i> Posts Destacados</h3>
       <div class="row">
         {% for post in featuredPosts %}
         <div class="col-sm-4">
-          <div class="post" style="margin-bottom:20px;">
+          <div class="post animate-on-scroll" style="margin-bottom:20px; transition-delay: {{ loop.index0 * 0.1 }}s;">
             <div class="post-heading">
               <img class="img-responsive" src="{{ asset('images/blog/' + post.image) }}" alt="{{ post.title }}">
             </div>
@@ -118,7 +118,7 @@
   {% endif %}
 
   <!-- Newsletter Section -->
-  <div class="newsletter-section" style="background: linear-gradient(rgba(108,99,255,0.9), rgba(80,70,220,0.9)), url('{{ asset('images/index/newsletter.jpg') }}') center/cover no-repeat;">
+  <div class="newsletter-section animate-on-scroll" style="background: linear-gradient(rgba(108,99,255,0.9), rgba(80,70,220,0.9)), url('{{ asset('images/index/newsletter.jpg') }}') center/cover no-repeat;">
     <div class="container">
       <h3><i class="fa fa-envelope-o"></i> Suscríbete al Newsletter</h3>
       <p>Recibe las últimas novedades y fotografías directamente en tu correo</p>
@@ -131,10 +131,10 @@
 
   <!-- Partners Section -->
   <div class="container">
-    <div class="partners-section">
+    <div class="partners-section animate-on-scroll">
       <h4><i class="fa fa-handshake-o"></i> Nuestros Partners</h4>
       <div class="partners-grid">
-        <div class="partner-item">
+        <div class="partner-item animate-on-scroll animate-scale" style="transition-delay: 0s;">
           <img src="{{ asset('images/index/log1.jpg') }}" alt="Partner 1">
           <span>Canon España</span>
         </div>

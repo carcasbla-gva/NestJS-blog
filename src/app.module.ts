@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApiModule } from './api/api.module';
 import { AdminController } from './admin/admin.controller';
 import { AdminService } from './admin/admin.service';
 import { AuthController } from './auth/auth.controller';
@@ -42,6 +43,7 @@ import { UsersService } from './users/users.service';
       }),
     }),
     TypeOrmModule.forFeature(ENTITIES),
+    ApiModule,
   ],
   controllers: [
     PagesController,

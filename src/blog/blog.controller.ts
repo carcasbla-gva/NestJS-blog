@@ -33,6 +33,9 @@ import {
   parseTags,
 } from '../common/view-helpers';
 import { Post as PostEntity } from '../entities/post.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PostFavorite } from '../entities/post-favorite.entity';
 
 @Controller()
 export class BlogController {
@@ -40,6 +43,8 @@ export class BlogController {
     private readonly blogService: BlogService,
     private readonly csrfService: CsrfService,
     private readonly usersService: UsersService,
+    @InjectRepository(PostFavorite)
+    private readonly favorites: Repository<PostFavorite>,
   ) {}
 
   @Get('blog')
@@ -466,10 +471,20 @@ export class BlogController {
     commentValues: Record<string, string> = {},
     commentErrors: Record<string, string> = {},
   ): Promise<void> {
-    const [recents, liked] = await Promise.all([
+    const [recents, liked, relatedPosts] = await Promise.all([
       this.blogService.findRecents(),
       this.blogService.hasLiked(post.id, req.sessionID),
+      this.blogService.findRelatedPosts(post),
     ]);
+
+    const [isFavorited, favoriteCount] = req.user
+      ? await Promise.all([
+          (await this.favorites.count({
+            where: { post: { id: post.id }, user: { id: req.user.id } },
+          })) > 0,
+          this.favorites.count({ where: { post: { id: post.id } } }),
+        ])
+      : [false, 0];
 
     const comments = (post.comments ?? []).filter(
       (comment) => comment.approved || req.user?.isAdmin,
@@ -479,7 +494,10 @@ export class BlogController {
       post,
       comments,
       recents,
+      relatedPosts,
       liked,
+      isFavorited,
+      favoriteCount,
       commentValues,
       commentErrors,
     });

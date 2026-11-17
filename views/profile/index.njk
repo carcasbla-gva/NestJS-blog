@@ -78,6 +78,26 @@
 
         <button type="submit" class="btn btn-lg sr-button">Cambiar contraseña</button>
       </form>
+
+      <hr class="divider">
+
+      <div class="favorites-section">
+        <h3><i class="fa fa-star"></i> Mis favoritos ({{ favorites | length }})</h3>
+        {% for fav in favorites %}
+          <div class="favorite-post-item">
+            <img src="{{ asset('images/blog/' + fav.post.image) }}" alt="{{ fav.post.title }}">
+            <div class="favorite-post-info">
+              <a href="/single_post/{{ fav.post.slug }}" class="favorite-post-title">{{ fav.post.title }}</a>
+              <div class="favorite-post-date">{{ fav.post.publishedAt | date('d F Y') }}</div>
+            </div>
+            <button class="remove-favorite-btn" data-post-id="{{ fav.post.id }}" title="Eliminar de favoritos">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        {% else %}
+          <p class="text-muted">Aún no tienes posts favoritos. <a href="/blog">Explora el blog</a> y marca tus posts favoritos.</p>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </div>

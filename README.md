@@ -32,7 +32,7 @@ que un clon nuevo no falle con `Unknown database`.
 
 | Pieza | Symfony original | Versión NestJS |
 | --- | --- | --- |
-| Framework | Symfony 6.4 | NestJS 12 (Express 5) |
+| Framework | Symfony 6.4 | NestJS 12 (Express 4) |
 | Plantillas | Twig | Nunjucks (`views/`) |
 | ORM | Doctrine | TypeORM 0.3 |
 | Base de datos | MySQL | MySQL (`mysql2`) |
@@ -98,9 +98,9 @@ entrar en `/admin/*`.
 
 ### Cuentas de usuario
 
-- Registro con auto-login y verificación de correo.
+- Registro con auto-login (el correo se marca verificado por defecto; se solicita verificación solo al cambiar el email desde el perfil).
 - Login/logout, recuperación y cambio de contraseña.
-- Perfil editable (nombre, email, biografía) y reenvío de verificación.
+- Perfil editable (nombre, email, biografía, avatar) y reenvío de verificación.
 
 ### Administración (`ROLE_ADMIN`)
 
@@ -126,9 +126,23 @@ entrar en `/admin/*`.
 - **Perfiles públicos de autor**: página `/author/:slug` con avatar, biografía y lista de posts del autor.
 - **Filtrado por tags**: ruta `/blog/tag/:tag` para ver todos los posts con una etiqueta concreta.
 - **Posts destacados**: campo `featured` en posts para mostrarlos en la portada.
-- **Editor de texto enriquecido**: campo de contenido con textarea ampliado en los formularios de creación y edición de posts.
 - **Subida de avatar**: los usuarios pueden subir una foto de perfil desde `/profile`.
-- **Enlace al autor desde cada post**: el nombre del autor en cada artículo enlaza a su perfil público.
+- **Enlace al autor desde cada post**: el nombre del autor en cada artículo enlaza a su perfil pública.
+- **Galería de imágenes**: las imágenes subidas desde el admin tienen vistas, "me gusta" y descarga (`/images/:id/view`, `/images/:id/like`, `/images/:id/download`).
+- **Honeypot antispam**: campo oculto en los formularios de contacto y comentarios para rechazar bots.
+- **Flash messages**: notificaciones de éxito, error e información tras cada acción.
+- **Modo oscuro/claro**: toggle en el navbar para alternar entre tema claro y oscuro, con la preferencia guardada en `localStorage`.
+- **Búsqueda en tiempo real**: autocompletado AJAX en el sidebar que muestra resultados al escribir (endpoint `/api/search` con delay de 300 ms).
+- **Sistema de favoritos**: los usuarios pueden marcar posts como favoritos y verlos en su perfil; los favoritos se gestionan vía `/api/favorites/:postId`.
+- **Estadísticas de lectura**: tiempo de lectura estimado (basado en 200 palabras/minuto) mostrado como badge en cada post.
+- **Formulario de contacto mejorado**: selector de asunto con opciones predefinidas y validación en tiempo real con mensajes de error inline.
+- **Widget de posts relacionados**: al final de cada artículo se muestran 3 posts de la misma categoría con imagen, título, vistas y likes.
+- **Barra de progreso de lectura**: barra fina con gradiente en la parte superior que muestra cuánto se ha leído del contenido.
+- **Navbar con efecto scroll**: el navbar cambia a fondo sólido con sombra al hacer scroll.
+- **Animaciones de entrada al scroll**: los elementos clave aparecen con animaciones suaves usando `Intersection Observer`.
+- **Breadcrumbs de navegación**: migas de pan visuales en todas las páginas para mejorar la UX y el SEO.
+- **Toast notifications**: notificaciones animadas que aparecen y desaparecen automáticamente, reemplazando a los flash messages clásicos.
+- **Botón volver arriba**: botón flotante que aparece al hacer scroll y lleva al inicio de la página con animación suave.
 
 ## Rutas
 
@@ -141,10 +155,10 @@ entrar en `/admin/*`.
 | `/blog/buscar?searchTerm=` | GET | Busca posts por contenido |
 | `/blog/categoria/:slug` | GET | Posts de una categoría |
 | `/blog/tag/:tag` | GET | Posts filtrados por etiqueta |
-| `/blog/new` | GET/POST | Crear post (requiere sesión) |
+| `/blog/new` | GET/POST | Crear post (requiere sesión, imagen obligatoria) |
 | `/single_post/:slug` | GET | Detalle de un post |
 | `/single_post/:slug/comment` | POST | Añadir comentario |
-| `/single_post/:slug/like` | GET/POST | Dar "me gusta" (JSON en POST) |
+| `/single_post/:slug/like` | GET/POST | Dar/quitar "me gusta" (toggle, JSON en POST) |
 | `/contact` | GET/POST | Formulario de contacto |
 | `/thankyou` | GET | Confirmación de contacto |
 | `/login` | GET/POST | Inicio de sesión |
@@ -170,13 +184,16 @@ entrar en `/admin/*`.
 | `/admin/images/:id` | POST | Editar metadatos |
 | `/admin/images/:id/delete` | POST | Borrar imagen |
 | `/admin/comments` | GET | Moderación de comentarios |
-| `/admin/comments/:id` | POST | Aprobar/desaprobar comentario |
+| `/admin/comments/:id` | POST | Aprobar/ocultar comentario (toggle) |
 | `/admin/comments/:id/delete` | POST | Borrar comentario |
 | `/admin/messages` | GET | Mensajes de contacto |
 | `/admin/messages/:id/delete` | POST | Borrar mensaje |
 | `/rss.xml` | GET | Feed RSS |
 | `/sitemap.xml` | GET | Sitemap |
 | `/robots.txt` | GET | Robots |
+| `/images/:id/view` | POST | Registrar vista de imagen (JSON) |
+| `/images/:id/like` | POST | Dar/quitar "me gusta" a imagen (JSON) |
+| `/images/:id/download` | GET | Descargar imagen |
 
 ## Variables de entorno
 
@@ -217,9 +234,15 @@ public/           CSS, JS, fuentes e imágenes originales
   validación en el controlador y mensajes de error junto a cada campo.
 - Se mantiene protección CSRF: el token se guarda en la sesión y se incluye en
   todos los formularios (`_csrf`; en login también se acepta `_csrf_token`).
-- Los archivos subidos se guardan en `public/images/blog` (posts) y en
-  `public/images/index/gallery` + `portfolio` (administración de imágenes),
-  igual que en el proyecto original.
-- Las sesiones se guardan en la tabla `session` mediante un store TypeORM.
+- Los archivos subidos se guardan en `public/images/blog` (posts),
+  `public/images/index/gallery` + `portfolio` (administración de imágenes) y
+  `public/images/avatars` (fotos de perfil).
+- Las sesiones se guardan en la tabla `session` mediante un store TypeORM, con
+  limpieza automática de sesiones caducadas cada hora.
 - `synchronize: true` sigue activo para desarrollo. En producción conviene
   sustituirlo por migraciones versionadas.
+- El registro crea los usuarios con el correo verificado por defecto; la
+  verificación por email se activa solo al cambiar el email desde el perfil.
+- Los rate limiters son independientes: uno estricto para autenticación
+  (10 peticiones/15 min) y otro más permisivo para formularios generales
+  (20 peticiones/10 min), más un limitador global POST (120 peticiones/10 min).

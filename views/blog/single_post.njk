@@ -15,7 +15,7 @@
 <div id="single">
   <div class="container">
     <!-- Full Article -->
-    <div class="row">
+    <div class="row animate-on-scroll">
       <h2>{{ post.title }}</h2>
       <hr class="subtitle">
       <div class="block1">
@@ -45,6 +45,7 @@
           <ul class="list-inline">
             <li>{{ post.publishedAt | date('d') }} {{ post.publishedAt | date('F') }} |</li>
             <li><i class="fa fa-eye sr-icons"></i> {{ post.numViews }} vistas |</li>
+            <li><span class="reading-time-badge"><i class="fa fa-clock-o"></i> {{ post.content | readingTime }}</span> |</li>
             <li><a class="page-scroll" href="#form">COMENTAR</a> <i class="fa fa-comments sr-icons"></i> {{ post.numComments }} |</li>
             <li>
               <a id="like-button" href="/single_post/{{ post.slug }}/like" data-slug="{{ post.slug }}">
@@ -52,6 +53,14 @@
               </a>
               <i class="fa fa-heart sr-icons"></i><span id="likes"> {{ post.numLikes }}</span>
             </li>
+            {% if currentUser %}
+              <li>
+                <a class="favorite-btn {% if isFavorited %}active{% endif %}" href="#" data-post-id="{{ post.id }}">
+                  <i class="fa {% if isFavorited %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                  <span class="fav-count">{{ favoriteCount }}</span>
+                </a>
+              </li>
+            {% endif %}
             {% if currentUser and currentUser.isAdmin %}
               <li><a href="/admin/posts/{{ post.id }}/edit"><i class="fa fa-pencil sr-icons"></i> Editar</a></li>
             {% endif %}
@@ -72,7 +81,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 block2">
         {% for comment in comments %}
-          <div class="comment">
+          <div class="comment animate-on-scroll" style="transition-delay: {{ loop.index0 * 0.05 }}s;">
             <h4>
               {{ comment.name }}
               {% if not comment.approved %}<span class="label label-warning">Pendiente de aprobación</span>{% endif %}
@@ -120,6 +129,30 @@
       </div>
     </div>
     <!-- End of Comments -->
+
+    <!-- Related Posts -->
+    {% if relatedPosts and relatedPosts.length %}
+    <div class="row related-posts-widget animate-on-scroll">
+      <div class="col-xs-12">
+        <h3><i class="fa fa-th-list"></i> Posts relacionados</h3>
+        <div class="row">
+          {% for related in relatedPosts %}
+          <div class="col-sm-4">
+            <a href="/single_post/{{ related.slug }}" class="related-post-card">
+              <img src="{{ asset('images/blog/' + related.image) }}" alt="{{ related.title }}">
+              <div class="related-post-info">
+                <div class="related-post-title">{{ related.title }}</div>
+                <div class="related-post-meta">
+                  <i class="fa fa-eye"></i> {{ related.numViews }} · <i class="fa fa-heart"></i> {{ related.numLikes }}
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
 <!-- End of Principal Content Start -->

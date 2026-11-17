@@ -4,7 +4,7 @@
 {% block body %}
 <div id="contact">
   <!-- Hero con imagen de fondo -->
-  <div style="background: linear-gradient(rgba(108,99,255,0.85), rgba(80,70,220,0.85)), url('{{ asset('images/contact_background.jpg') }}') center/cover no-repeat; padding: 100px 0 60px; text-align: center;">
+  <div class="animate-on-scroll" style="background: linear-gradient(rgba(108,99,255,0.85), rgba(80,70,220,0.85)), url('{{ asset('images/contact_background.jpg') }}') center/cover no-repeat; padding: 100px 0 60px; text-align: center;">
     <div class="container">
       <h1 style="color: #fff; font-size: 48px; margin-bottom: 15px;"><i class="fa fa-envelope"></i> Contacto</h1>
       <p style="color: rgba(255,255,255,0.9); font-size: 18px; max-width: 600px; margin: 0 auto;">¿Tienes alguna pregunta o quieres trabajar con nosotros? No dudes en escribirnos.</p>
@@ -13,22 +13,24 @@
   <div class="container">
 
     <!-- Contact Form -->
-    <div class="contact-form-card">
-      <form action="/contact" method="post">
+    <div class="contact-form-card animate-on-scroll">
+      <form action="/contact" method="post" id="contactForm">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
               <label for="firstName"><i class="fa fa-user"></i> Nombre</label>
-              <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Tu nombre" value="{{ values.firstName or '' }}">
+              <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Tu nombre" value="{{ values.firstName or '' }}" required>
+              <i class="fa fa-exclamation-circle validation-icon"></i>
               {{ forms.error(errors, 'firstName') }}
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="lastName"><i class="fa fa-user"></i> Apellidos</label>
-              <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Tus apellidos" value="{{ values.lastName or '' }}">
+              <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Tus apellidos" value="{{ values.lastName or '' }}" required>
+              <i class="fa fa-exclamation-circle validation-icon"></i>
               {{ forms.error(errors, 'lastName') }}
             </div>
           </div>
@@ -36,19 +38,28 @@
 
         <div class="form-group">
           <label for="email"><i class="fa fa-envelope"></i> Email</label>
-          <input type="email" id="email" name="email" class="form-control" placeholder="tu@email.com" value="{{ values.email or '' }}">
+          <input type="email" id="email" name="email" class="form-control" placeholder="tu@email.com" value="{{ values.email or '' }}" required>
+          <i class="fa fa-exclamation-circle validation-icon"></i>
           {{ forms.error(errors, 'email') }}
         </div>
 
         <div class="form-group">
-          <label for="subject"><i class="fa fa-tag"></i> Asunto</label>
+          <label><i class="fa fa-tag"></i> Asunto</label>
+          <div class="subject-selector">
+            <button type="button" class="subject-option" data-subject="Consulta general">Consulta general</button>
+            <button type="button" class="subject-option" data-subject="Servicios fotográficos">Servicios fotográficos</button>
+            <button type="button" class="subject-option" data-subject="Colaboración">Colaboración</button>
+            <button type="button" class="subject-option" data-subject="Soporte técnico">Soporte técnico</button>
+            <button type="button" class="subject-option" data-subject="Otro">Otro</button>
+          </div>
           <input type="text" id="subject" name="subject" class="form-control" placeholder="¿En qué podemos ayudarte?" value="{{ values.subject or '' }}">
           {{ forms.error(errors, 'subject') }}
         </div>
 
         <div class="form-group">
           <label for="message"><i class="fa fa-comment"></i> Mensaje</label>
-          <textarea id="message" name="message" class="form-control" rows="5" placeholder="Escribe tu mensaje aquí...">{{ values.message or '' }}</textarea>
+          <textarea id="message" name="message" class="form-control" rows="5" placeholder="Escribe tu mensaje aquí..." required>{{ values.message or '' }}</textarea>
+          <i class="fa fa-exclamation-circle validation-icon"></i>
           {{ forms.error(errors, 'message') }}
         </div>
 
@@ -60,17 +71,17 @@
 
     <!-- Contact Info Cards -->
     <div class="contact-info-cards">
-      <div class="contact-info-card">
+      <div class="contact-info-card animate-on-scroll animate-scale" style="transition-delay: 0s;">
         <i class="fa fa-phone"></i>
         <h5>Teléfono</h5>
         <p>(00228) 92229954</p>
       </div>
-      <div class="contact-info-card">
+      <div class="contact-info-card animate-on-scroll animate-scale" style="transition-delay: 0.1s;">
         <i class="fa fa-envelope"></i>
         <h5>Email</h5>
         <p>info@fotoblog.com</p>
       </div>
-      <div class="contact-info-card">
+      <div class="contact-info-card animate-on-scroll animate-scale" style="transition-delay: 0.2s;">
         <i class="fa fa-map-marker"></i>
         <h5>Dirección</h5>
         <p>35 North Drive, Adroukpape</p>

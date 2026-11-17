@@ -4,7 +4,7 @@
 <div id="about">
 
   <!-- Hero -->
-  <div class="about-hero" style="background: linear-gradient(rgba(108,99,255,0.85), rgba(80,70,220,0.85)), url('{{ asset('images/about_us.jpg') }}') center/cover no-repeat;">
+  <div class="about-hero animate-on-scroll" style="background: linear-gradient(rgba(108,99,255,0.85), rgba(80,70,220,0.85)), url('{{ asset('images/about_us.jpg') }}') center/cover no-repeat;">
     <div class="container">
       <h1><i class="fa fa-camera"></i> Sobre Nosotros</h1>
       <p>Somos un equipo apasionado por la fotografía que captura momentos únicos y los convierte en recuerdos eternos.</p>
@@ -15,14 +15,14 @@
   <div class="container about-content">
     <div class="row">
       <div class="col-sm-6">
-        <div class="about-card">
+        <div class="about-card animate-on-scroll animate-fade-left">
           <i class="fa fa-institution"></i>
           <h4>Nuestro Estudio</h4>
           <p>Somos un estudio de fotografía profesional con más de 10 años de experiencia. Nos especializamos en capturar la esencia de cada momento, desde paisajes impresionantes hasta retratos íntimos y bodas inolvidables.</p>
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="about-card">
+        <div class="about-card animate-on-scroll animate-fade-right">
           <i class="fa fa-users"></i>
           <h4>Nuestro Equipo</h4>
           <p>Contamos con un equipo de fotógrafos talentosos y apasionados, cada uno con su especialidad. Juntos creamos imágenes que cuentan historias y transmiten emociones únicas.</p>
@@ -32,28 +32,28 @@
 
     <!-- Services -->
     <div class="row" style="margin-top: 40px;">
-      <div class="col-sm-12 text-center mb-40">
+      <div class="col-sm-12 text-center mb-40 animate-on-scroll">
         <h2><i class="fa fa-tasks text-primary"></i> Nuestros Servicios</h2>
         <p class="text-gray">Ofrecemos una amplia gama de servicios fotográficos profesionales</p>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-4">
-        <div class="about-card text-center">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="transition-delay: 0s;">
           <i class="fa fa-image"></i>
           <h4>Edición Fotográfica</h4>
           <p>Retoque profesional y edición de imágenes con las últimas herramientas de Photoshop y Lightroom.</p>
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="about-card text-center">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="transition-delay: 0.1s;">
           <i class="fa fa-camera"></i>
           <h4>Sesiones Fotográficas</h4>
           <p>Sesiones personalizadas para retratos, bodas, eventos y fotografía de producto.</p>
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="about-card text-center">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="transition-delay: 0.2s;">
           <i class="fa fa-graduation-cap"></i>
           <h4>Formación</h4>
           <p>Cursos y talleres de fotografía para todos los niveles, desde principiantes hasta avanzados.</p>
@@ -63,14 +63,14 @@
 
     <!-- Pricing -->
     <div class="row" style="margin-top: 60px;">
-      <div class="col-sm-12 text-center mb-40">
+      <div class="col-sm-12 text-center mb-40 animate-on-scroll">
         <h2><i class="fa fa-graduation-cap text-primary"></i> Planes de Formación</h2>
         <p class="text-gray">Elige el plan que mejor se adapte a tus necesidades</p>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-4">
-        <div class="about-card text-center" style="border-top: 4px solid var(--primary);">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="border-top: 4px solid var(--primary); transition-delay: 0s;">
           <h4 style="color: var(--primary);">Principiante</h4>
           <h2 style="color: var(--primary);">$99</h2>
           <ul class="list-unstyled" style="text-align: left; margin: 20px 0;">
@@ -83,7 +83,7 @@
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="about-card text-center" style="border-top: 4px solid var(--dark);">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="border-top: 4px solid var(--dark); transition-delay: 0.1s;">
           <h4 style="color: var(--dark);">Intermedio</h4>
           <h2 style="color: var(--dark);">$199</h2>
           <ul class="list-unstyled" style="text-align: left; margin: 20px 0;">
@@ -96,7 +96,7 @@
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="about-card text-center" style="border-top: 4px solid var(--secondary);">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="border-top: 4px solid var(--secondary); transition-delay: 0.2s;">
           <h4 style="color: var(--secondary);">Profesional</h4>
           <h2 style="color: var(--secondary);">$299</h2>
           <ul class="list-unstyled" style="text-align: left; margin: 20px 0;">
@@ -112,35 +112,35 @@
 
     <!-- Testimonials -->
     <div class="row" style="margin-top: 60px;">
-      <div class="col-sm-12 text-center mb-40">
+      <div class="col-sm-12 text-center mb-40 animate-on-scroll">
         <h2><i class="fa fa-quote-left text-primary"></i> Opiniones de Clientes</h2>
         <p class="text-gray">Lo que dicen nuestros clientes sobre nosotros</p>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-3">
-        <div class="about-card text-center">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="transition-delay: 0s;">
           <img src="{{ asset('images/clients/client1.jpg') }}" alt="Cliente" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
           <h5 style="margin-bottom: 10px;">María García</h5>
           <p style="font-style: italic; color: var(--gray); font-size: 14px;">"Excelente servicio y resultados increíbles. Muy recomendados."</p>
         </div>
       </div>
       <div class="col-sm-3">
-        <div class="about-card text-center">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="transition-delay: 0.1s;">
           <img src="{{ asset('images/clients/client2.jpg') }}" alt="Cliente" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
           <h5 style="margin-bottom: 10px;">Carlos López</h5>
           <p style="font-style: italic; color: var(--gray); font-size: 14px;">"Las fotos de nuestra boda quedaron espectaculares. ¡Gracias!"</p>
         </div>
       </div>
       <div class="col-sm-3">
-        <div class="about-card text-center">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="transition-delay: 0.2s;">
           <img src="{{ asset('images/clients/client3.jpg') }}" alt="Cliente" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
           <h5 style="margin-bottom: 10px;">Ana Martínez</h5>
           <p style="font-style: italic; color: var(--gray); font-size: 14px;">"El curso de fotografía superó todas mis expectativas."</p>
         </div>
       </div>
       <div class="col-sm-3">
-        <div class="about-card text-center">
+        <div class="about-card text-center animate-on-scroll animate-scale" style="transition-delay: 0.3s;">
           <img src="{{ asset('images/clients/client4.jpg') }}" alt="Cliente" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
           <h5 style="margin-bottom: 10px;">Pedro Sánchez</h5>
           <p style="font-style: italic; color: var(--gray); font-size: 14px;">"Profesionalismo y creatividad en cada sesión. ¡Volveré!"</p>

@@ -351,6 +351,32 @@ export class BlogService {
     );
   }
 
+  async findRelatedPosts(
+    currentPost: Post,
+    limit = 3,
+  ): Promise<Post[]> {
+    const query = this.posts
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.postUser', 'postUser')
+      .where('post.published = :published', { published: true })
+      .andWhere('post.id != :id', { id: currentPost.id });
+
+    if (currentPost.category) {
+      query.andWhere('post.categoryId = :categoryId', {
+        categoryId: currentPost.category.id,
+      });
+    } else if (currentPost.tags && currentPost.tags.length > 0) {
+      query.andWhere('post.tags LIKE :tag', {
+        tag: `%"${currentPost.tags[0]}"%`,
+      });
+    }
+
+    return query
+      .orderBy('post.publishedAt', 'DESC')
+      .take(limit)
+      .getMany();
+  }
+
   private async uniqueSlug(
     base: string,
     exists: (slug: string) => Promise<number>,

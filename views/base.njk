@@ -41,6 +41,9 @@
 
 <body id="page-top">
 
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress-bar" id="readingProgressBar"></div>
+
   <!-- Navigation Bar -->
   <nav class="navbar navbar-fixed-top">
     <div class="container">
@@ -58,6 +61,12 @@
         </div>
         <div class="collapse navbar-collapse" id="menu">
           <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="#" class="dark-mode-toggle" id="darkModeToggle" title="Cambiar tema">
+                <i class="fa fa-moon-o"></i>
+                <i class="fa fa-sun-o"></i>
+              </a>
+            </li>
             <li class="{% if currentPath == '/' %}active{% endif %}">
               <a href="/"><i class="fa fa-home"></i> Inicio</a>
             </li>
@@ -102,27 +111,64 @@
   <!-- End of Navigation Bar -->
 
   {% if flash %}
-    <div class="container" style="margin-top: 80px;">
-      {% if flash.type == 'error' %}
-        <div class="alert alert-danger alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <i class="fa fa-times-circle"></i> {{ flash.message }}
+    <div class="toast-container" id="toastContainer">
+      <div class="toast-notification toast-{{ flash.type }} show" role="alert">
+        <div class="toast-icon">
+          {% if flash.type == 'error' %}
+            <i class="fa fa-times-circle"></i>
+          {% elif flash.type == 'success' %}
+            <i class="fa fa-check-circle"></i>
+          {% else %}
+            <i class="fa fa-info-circle"></i>
+          {% endif %}
         </div>
-      {% elif flash.type == 'success' %}
-        <div class="alert alert-success alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <i class="fa fa-check-circle"></i> {{ flash.message }}
-        </div>
-      {% else %}
-        <div class="alert alert-info alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <i class="fa fa-info-circle"></i> {{ flash.message }}
-        </div>
-      {% endif %}
+        <div class="toast-message">{{ flash.message }}</div>
+        <button type="button" class="toast-close" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+      </div>
     </div>
   {% endif %}
 
+  <!-- Breadcrumbs -->
+  {% if currentPath and currentPath != '/' %}
+    <nav class="breadcrumbs-nav" aria-label="Migas de pan">
+      <div class="container">
+        <ol class="breadcrumbs">
+          <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i> Inicio</a></li>
+          {% if currentPath|startswith('/blog') and currentPath != '/blog' %}
+            <li class="breadcrumb-item"><a href="/blog">Blog</a></li>
+            <li class="breadcrumb-item active">{{ currentPageTitle or 'Artículo' }}</li>
+          {% elif currentPath == '/blog' %}
+            <li class="breadcrumb-item active">Blog</li>
+          {% elif currentPath|startswith('/admin') %}
+            <li class="breadcrumb-item"><a href="/admin">Administración</a></li>
+            <li class="breadcrumb-item active">{{ currentPageTitle or 'Panel' }}</li>
+          {% elif currentPath|startswith('/author') %}
+            <li class="breadcrumb-item active">{{ currentPageTitle or 'Autor' }}</li>
+          {% elif currentPath == '/profile' %}
+            <li class="breadcrumb-item active">Mi perfil</li>
+          {% elif currentPath == '/contact' %}
+            <li class="breadcrumb-item active">Contacto</li>
+          {% elif currentPath == '/about' %}
+            <li class="breadcrumb-item active">Sobre nosotros</li>
+          {% elif currentPath == '/login' %}
+            <li class="breadcrumb-item active">Iniciar sesión</li>
+          {% elif currentPath == '/register' %}
+            <li class="breadcrumb-item active">Registrarse</li>
+          {% else %}
+            <li class="breadcrumb-item active">{{ currentPageTitle or 'Página' }}</li>
+          {% endif %}
+        </ol>
+      </div>
+    </nav>
+  {% endif %}
+
   {% block body %}{% endblock %}
+
+  <!-- Back to top button -->
+  <a href="#page-top" id="backToTop" title="Volver arriba"><i class="fa fa-chevron-up"></i></a>
+
+  <!-- Toast container for dynamic notifications -->
+  <div class="toast-container" id="toastContainer"></div>
 
   <!-- Footer -->
   <footer class="site-footer">

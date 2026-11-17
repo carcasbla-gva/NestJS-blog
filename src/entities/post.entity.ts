@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Category } from './category.entity';
 import { Comment } from './comment.entity';
+import { PostFavorite } from './post-favorite.entity';
 import { PostLike } from './post-like.entity';
 import { User } from './user.entity';
 
@@ -71,6 +72,9 @@ export class Post {
 
   @OneToMany(() => PostLike, (like) => like.post)
   likes: PostLike[];
+
+  @OneToMany(() => PostFavorite, (favorite) => favorite.post)
+  favorites: PostFavorite[];
 
   like(): this {
     this.numLikes = (this.numLikes ?? 0) + 1;

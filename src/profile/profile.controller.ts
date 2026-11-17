@@ -20,6 +20,9 @@ import { imageStorage, isAllowedImageMime, removeUploadedFile } from '../common/
 import { optimizeImage } from '../common/images';
 import { join } from 'path';
 import { PUBLIC_DIR } from '../common/paths';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PostFavorite } from '../entities/post-favorite.entity';
 
 @Controller('profile')
 @UseGuards(AuthGuard)
@@ -28,10 +31,19 @@ export class ProfileController {
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
     private readonly csrfService: CsrfService,
+    @InjectRepository(PostFavorite)
+    private readonly favorites: Repository<PostFavorite>,
   ) {}
 
   @Get()
-  profile(@Req() req: Request, @Res() res: Response): void {
+  async profile(@Req() req: Request, @Res() res: Response): Promise<void> {
+    const favorites = await this.favorites
+      .createQueryBuilder('fav')
+      .leftJoinAndSelect('fav.post', 'post')
+      .where('fav.userId = :userId', { userId: req.user.id })
+      .orderBy('fav.createdAt', 'DESC')
+      .getMany();
+
     res.render('profile/index', {
       values: {
         name: req.user.name,
@@ -41,6 +53,7 @@ export class ProfileController {
       errors: {},
       passwordErrors: {},
       avatar: req.user.avatar,
+      favorites,
     });
   }
 

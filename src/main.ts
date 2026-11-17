@@ -101,6 +101,13 @@ async function bootstrap(): Promise<void> {
     watch: false,
   });
   nunjucksEnvironment.addFilter('date', formatDate);
+  nunjucksEnvironment.addFilter('startswith', (str: string, prefix: string) => str.startsWith(prefix));
+  nunjucksEnvironment.addFilter('readingTime', (content: string): string => {
+    if (!content) return '1 min';
+    const words = content.trim().split(/\s+/).length;
+    const minutes = Math.max(1, Math.ceil(words / 200));
+    return `${minutes} min de lectura`;
+  });
   nunjucksEnvironment.addGlobal('asset', asset);
   app.setViewEngine('njk');
 

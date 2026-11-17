@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Post } from './post.entity';
+import { PostFavorite } from './post-favorite.entity';
 
 @Entity('user')
 export class User {
@@ -40,6 +41,9 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.postUser)
   posts: Post[];
+
+  @OneToMany(() => PostFavorite, (favorite) => favorite.user)
+  favorites: PostFavorite[];
 
   /** Symfony añade siempre ROLE_USER a todos los usuarios. */
   getRoles(): string[] {
